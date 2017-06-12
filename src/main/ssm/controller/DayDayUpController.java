@@ -16,6 +16,6 @@ public class DayDayUpController {
 
     @RequestMapping(value="/test")
     public void findUserForLogin(){
-        System.out.println(service.findUserForLogin().getUserName());
+        System.out.println(service.findUserForLogin("test").getUserName());
     }
 }

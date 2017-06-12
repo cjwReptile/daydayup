@@ -8,5 +8,5 @@ import ssm.model.UserBean;
  */
 @Repository
 public interface DayDayUpDao {
-      public UserBean findUserForLogin();
+      public UserBean findUserForLogin(String key);
 }

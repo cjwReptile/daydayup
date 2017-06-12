@@ -36,14 +36,10 @@ public class RedisUtil {
 
     public boolean set(final  String key,Object value){
         boolean result=false;
-        System.out.print("SETNAME");
         try{
-            System.out.print("SETNAME----");
             ValueOperations<Serializable,Object>operations=redisTemplate.opsForValue();
             operations.set(key,value);
             result=true;
-            System.out.print("SETNAME++++++");
-            System.out.print(result);
         }catch (Exception e){
             e.printStackTrace();
         }

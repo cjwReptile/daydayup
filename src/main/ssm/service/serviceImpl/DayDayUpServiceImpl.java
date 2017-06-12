@@ -15,7 +15,7 @@ public class DayDayUpServiceImpl implements DayDayUpService{
     private DayDayUpDao dayDayUpDao;
 
 
-    public UserBean findUserForLogin() {
-        return dayDayUpDao.findUserForLogin();
+    public UserBean findUserForLogin(String key) {
+        return dayDayUpDao.findUserForLogin(key);
     }
 }
