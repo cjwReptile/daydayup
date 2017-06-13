@@ -4,5 +4,9 @@
     <select id="findUserForLogin" resultType="ssm.model.UserBean">
         select user_name as "userName" from study where user_id=#{key,jdbcType=VARCHAR}
     </select>
+
+    <select id="findUser" resultType="ssm.model.UserBean">
+        select user_name as "userName",user_password as "userPassword" from study
+    </select>
 </mapper>
 

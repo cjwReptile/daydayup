@@ -18,15 +18,57 @@ public class MethodCacheInterceptor implements MethodInterceptor{
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Object[] keys=methodInvocation.getArguments();
-        System.out.print("ssssssss");
-        for(Object key:keys){
-             if(redisUtil.exsists(key.toString())){
-                  return redisUtil.get(key.toString());
-             }
+        Object value=null;
+        String targetName=methodInvocation.getThis().getClass().getName();
+        String methodName=methodInvocation.getMethod().getName();
+        if(!idAddCache(methodName,targetName)){
+            return methodInvocation.proceed();
         }
-        methodInvocation.proceed();
-        return null;
+        final String key=getCacheKey(methodName,targetName,keys);
+        try {
+            if(redisUtil.exsists(key)){
+                return redisUtil.get(key);
+            }
+            value=methodInvocation.proceed();
+            if(value!=null){
+                final Object fvalue=value;
+                new Thread(new Runnable() {
+                    public void run() {
+                        redisUtil.set(key,fvalue);
+                    }
+                }).start();
+            }
+        }catch (Exception e){
+            if(value==null){
+                return methodInvocation.proceed();
+            }
+            e.printStackTrace();
+        }
+
+        return value;
     }
+    public boolean idAddCache(String methodName,String targetName){
+        boolean flag=true;
+        if(methodNamesList.contains(methodName)||targetNamesList.contains(targetName)){
+                   flag=false;
+        }
+        return flag;
+    }
+
+    public String  getCacheKey(String methodName,String targetName,Object[] keys){
+        StringBuffer sb=new StringBuffer();
+        if(methodName!=null&&targetName!=null){
+            sb.append(methodName).append("_").append(targetName);
+        }
+        if(keys!=null&&keys.length>0){
+            for(int i=0;i<keys.length;i++){
+                sb.append("_").append(keys[i]);
+            }
+        }
+
+        return sb.toString();
+    }
+
 
 
     public RedisUtil getRedisUtil() {

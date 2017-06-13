@@ -1,9 +1,11 @@
 package ssm.model;
 
+import java.io.Serializable;
+
 /**
  * Created by hasee on 2017/4/27.
  */
-public class UserBean {
+public class UserBean implements Serializable{
 
     private  String userName;
 
