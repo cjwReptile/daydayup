@@ -8,5 +8,27 @@
     <select id="findUser" resultType="ssm.model.UserBean">
         select user_name as "userName",user_password as "userPassword" from study
     </select>
+
+    <select id="getGoodInfo" resultType="java.util.HashMap">
+       select sec_kill_id as "secKillId",
+       sec_kill_name as "secKillName",
+       sec_kill_count as "secKillCount"
+       from seckill_good where sec_kill_id=#{param.secKillId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateGoodNum">
+         update seckill_good set sec_kill_count=sec_kill_count-1
+         where sec_kill_id=#{param.secKillId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="addSuccessCount">
+       insert into success_good (user_id,sec_kill_id)
+       values
+       (
+       #{param.secKillId,jdbcType=VARCHAR},
+       #{param.userId,jdbcType=VARCHAR}
+       )
+    </insert>
+
 </mapper>
 

@@ -33,6 +33,17 @@
         <property name="maxWaitMillis" value="${redis.maxWait}"/>
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
     </bean>
+
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy"  depends-on="poolConfig">
+        <constructor-arg name="poolConfig" ref="poolConfig" /> <!-- 加载jedisPool配置信息 -->
+        <constructor-arg name="host" value="${redis.host}" /><!-- redis主机地址 -->
+        <constructor-arg name="port" value="${redis.port}"/> <!-- redis连接端口 -->
+        <!-- <constructor-arg name="password" value="${redis.pass}"/> 密码 -->
+        <!--<constructor-arg name="database" value="${redis.database}"/> 数据库 -->
+        <!--<constructor-arg name="timeout" value="${redis.timeout}"/> 连接超时 -->
+    </bean>
+
     <!-- redis连接工厂 -->
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="poolConfig" ref="poolConfig"/>
@@ -41,6 +52,10 @@
         <property name="password" value="${redis.password}"/>
         <property name="timeout" value="${redis.timeout}"></property>
     </bean>
+
+
+
+
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="keySerializer">
@@ -69,6 +84,11 @@
     </bean>
     <bean id="redisUtil" class="ssm.util.RedisUtil">
         <property name="redisTemplate" ref="redisTemplate"/>
+    </bean>
+
+    <bean id="redisUtilTwo" class="ssm.util.RedisUtilTwo">
+        <property name="jedisPool" ref="jedisPool"/>
+
     </bean>
     <!--配置切面拦截方法 -->
     <aop:config proxy-target-class="true">
