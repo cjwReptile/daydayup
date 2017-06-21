@@ -1,9 +1,10 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="gbk"?>
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+<display-name>Archetype Created Web Application</display-name>
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -41,7 +42,7 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
-  <!-- 闃叉spring鍐呭瓨婧㈠嚭鐩戝惉鍣紝姣斿quartz -->
+  <!-- 防止spring内存溢出监听器，比如quartz -->
   <listener>
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
@@ -59,7 +60,7 @@
 
   <servlet-mapping>
     <servlet-name>SpringMVC</servlet-name>
-    <!-- 姝ゅ涔熷彲浠ラ厤缃垚 *.do 褰㈠紡 -->
+    <!-- 此处也可以配置成 *.do 形式 -->
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 

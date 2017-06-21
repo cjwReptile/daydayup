@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.dao.SecKillDao">
+    <!-- 目的：为DAO接口方法提供sql语句配置 -->
+    <update id="updataProduct">
+        update seckill
+        SET
+          number = number-1
+        WHERE seckill_id = #{seckillId}
+         AND start_time <![CDATA[<=]]> #{killTime}
+        AND  end_time >= #{killTime}
+        AND number >0;
+    </update>
+    
+    <select id="queryById" resultType="ssm.model.SecKill" parameterType="long">
+        select seckill_id "secKillId",name "name",number "number",start_time "startTime",end_time "endTime",create_time "createTime"
+        FROM seckill
+        where seckill_id = #{seckillId}
+    </select>
+
+    <select id="queryAll" resultType="ssm.model.SecKill">
+        SELECT seckill_id "secKillId",name "name",number "number",start_time "startTime",end_time "endTime",create_time "createTime"
+        FROM seckill
+        ORDER BY create_time
+        limit #{offset},#{limit}
+    </select>
+
+    <!-- Mybatis 调用存储过程-->
+    <select id="killByProcedure" statementType="CALLABLE">
+        call execute_seckill(
+          #{seckillId,jdbcType=BIGINT,mode=IN},
+          #{phone,jdbcType=BIGINT,mode=IN},
+          #{killTime,jdbcType=TIMESTAMP,mode=IN},
+          #{result,jdbcType=INTEGER,mode=OUT}
+        )
+    </select>
+</mapper>

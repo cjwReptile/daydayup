@@ -10,7 +10,15 @@
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
+
+    <!-- 当上面要访问的静态资源不包括在上面的配置中时，则根据此配置来访问 -->
+
+
+
     <context:component-scan base-package="ssm.controller"></context:component-scan>
+    <mvc:annotation-driven />
+
+
 
     <bean id="mappingJacksonHttpMessageConverter"
           class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -42,4 +50,6 @@
         <!-- 内存中的最大值 -->
         <property name="maxInMemorySize" value="4096"/>
     </bean>
+
+   <mvc:resources mapping="/statics/**" location="/statics/" />
 </beans>

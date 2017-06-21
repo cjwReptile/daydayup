@@ -37,6 +37,7 @@ public class DayDayUpController {
 
     @RequestMapping(value="/seckill")
     public @ResponseBody Map<String,String> seckill(SecKillBo bo){
+        System.out.println(bo.getParam()+"map");
         Map<String,String> map=new HashMap<String, String>();
         int i=service.getUserSetSize(bo);
         if(i>10){
@@ -51,4 +52,6 @@ public class DayDayUpController {
         }
         return map;
     }
+
+
 }
