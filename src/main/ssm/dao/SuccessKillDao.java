@@ -14,12 +14,12 @@ public interface SuccessKillDao {
      *@Date 2017/6/21 10:45
      *@Description 秒杀成功记录入库
      */
-    int insertSuccessKill(@Param("secKillId") Long secKillId,@Param("phone") Long phone);
+    int insertSuccessKill(@Param("secKillId") Long secKillId,@Param("userPhone") Long phone);
 
     /**
      *@Author  cjw
      *@Date 2017/6/21 10:47
      *@Description 获取秒杀成功记录
      */
-    SuccessKill querySuccessRecord(@Param("secKillId") Long secKillId,@Param("phone") Long phone);
+    SuccessKill querySuccessRecord(@Param("secKillId") Long secKillId,@Param("userPhone") Long phone);
 }

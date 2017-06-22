@@ -42,7 +42,7 @@
                         </td>
                         <td><fmt:formatDate value="${sk.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td><fmt:formatDate value="${sk.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td><a class="btn btn-info" href="/seckill/${sk.secKillId}/detail" target="_blank">link</a> </td>
+                        <td><a class="btn btn-info" href="/daydayup/seckill/${sk.secKillId}/detail" target="_blank">link</a> </td>
                     </tr>
 
                 </c:forEach>
@@ -55,7 +55,7 @@
 </div>
 
 </body>
-<script src="${pageContext.request.contextPath}/statics/seckill-main.js"></script>
+
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->

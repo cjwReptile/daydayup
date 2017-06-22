@@ -17,7 +17,7 @@ public interface SecKillDao {
      *@Date 2017/6/21 10:36
      * 更新数据库记录
      */
-    public int updataProduct(@Param("secKillId") Long secKillId,@Param("secKillTime") Date secKillTime);
+    public int updataProduct(@Param("seckIllId") Long seckIllId,@Param("secKillTime") Date secKillTime);
 
     /**
      *@Author  cjw

@@ -3,10 +3,7 @@ package ssm.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ssm.Exceptions.RepeatSecKillException;
 import ssm.Exceptions.SecKillCloseException;
 import ssm.Exceptions.SecKillException;
@@ -62,7 +59,8 @@ public class SecKillController {
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public SecKillResult<SecKillExcution> excuteSecKill(Model model,Long secKillId,String md5,Long userPhone){
+    public SecKillResult<SecKillExcution> excuteSecKill(Model model,@PathVariable("secKillId")Long secKillId,@PathVariable("md5")String md5, @CookieValue(value = "killPhone",required = false)Long userPhone){
+           System.out.println(md5);
            try {
                SecKillExcution secKillExcution=service.excuteSecKill(secKillId,userPhone,md5);
                return new SecKillResult<SecKillExcution>(true,secKillExcution);
@@ -81,10 +79,22 @@ public class SecKillController {
            }
     }
 
-    @RequestMapping(value = "/time/now", method = RequestMethod.GET)
+    @RequestMapping(value = "/time/now", method = RequestMethod.GET
+          )
     @ResponseBody
     public SecKillResult<Long> time(){
         Date now = new Date();
         return new SecKillResult<Long>(true,now.getTime());
+    }
+
+    @RequestMapping(value="/{secKillId}/detail",method = RequestMethod.GET)
+    public String secKillDetail(Model model,@PathVariable("secKillId") Long secKillId){
+        System.out.println(secKillId+"ididid");
+        SecKill secKill=service.queryById(secKillId);
+        if (secKill==null){
+            return "redirect:/seckill/list";
+        }
+        model.addAttribute("secKill",secKill);
+        return "seckill-detail";
     }
 }
