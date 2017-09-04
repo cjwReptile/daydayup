@@ -74,18 +74,20 @@ public class SecKillServiceImpl implements SecKillService{
     {
 
        if(md5==null||!getMD5(seckIllId).equals(md5)){
+           System.out.println(getMD5(seckIllId)+"   第二次");
+           System.out.println(md5+"   第一次");
           throw new SecKillException("seckill md5 change");
        }
-       Date now=new Date();
+       Date secKillTime=new Date();
        try {
            int i=successKillDao.insertSuccessKill(seckIllId,userPhone);
            //i<0重复秒杀
-           if(i<0){
+           if(i<=0){
                throw new RepeatSecKillException("repeate seckill");
            }else{
                //执行减库存
-               int j=secKillDao.updataProduct(seckIllId,now);
-               if(j<0){
+               int j=secKillDao.updataProduct(seckIllId,secKillTime);
+               if(j<=0){
                    throw new SecKillCloseException("seckill close");
                }else{
                    //秒杀成功
@@ -98,8 +100,9 @@ public class SecKillServiceImpl implements SecKillService{
        }catch (SecKillCloseException e2){
             throw e2;
        }catch (Exception e3){
-            throw new SecKillException("error"+ e3.getMessage());
+           e3.printStackTrace();
        }
+       return null;
     }
     /**
      *获取md5值

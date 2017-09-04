@@ -8,9 +8,9 @@
         update seckill
         SET
           number = number-1
-        WHERE seckill_id = #{seckillId}
-         AND start_time <![CDATA[<=]]> #{killTime}
-        AND  end_time >= #{killTime}
+        WHERE seckill_id = #{seckIllId}
+         AND start_time <![CDATA[<=]]> #{secKillTime}
+        AND  end_time >= #{secKillTime}
         AND number >0;
     </update>
     
