@@ -4,6 +4,6 @@
     <title>没有权限</title>
 </head>
 <body>
-失败
+${failMsg}
 </body>
 </html>

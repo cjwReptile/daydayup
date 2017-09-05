@@ -1,5 +1,6 @@
 package HomeWorkManager.controller;
 
+import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ssm.model.UserBean;
 
 /**
  * Created by cjw on 2017/9/5.
@@ -22,8 +22,9 @@ public class HomeWorkController {
     @Autowired
     private UserService userService;
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public String login(UserBean userBean, Model model){
-           String result=doLogin(userBean);
+    public String login(UserEnity userEnity, Model model){
+           System.out.println(userEnity.getUserName()+"sssssssssssssssssssssssssssssssssssssssss");
+           String result=doLogin(userEnity);
            if(!"SUCC".equals(result)){
 
            }
@@ -32,14 +33,14 @@ public class HomeWorkController {
             return "/homeworkjsp/fail";
         }else{
             model.addAttribute("successMsg", "登陆成功！");//返回到页面说夹带的参数
-            model.addAttribute("name", userBean.getUserName());
+            model.addAttribute("name", userEnity.getUserName());
             return "/homeworkjsp/success";//返回的页面
         }
     }
 
-    public String doLogin(UserBean userBean){
+    public String doLogin(UserEnity userEnity){
         Subject subject= SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(userBean.getUserName(),userBean.getPassWord());
+        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(userEnity.getUserName(),userEnity.getPassword());
         try {
             subject.login(usernamePasswordToken);
         }catch (UnknownAccountException e){
@@ -48,6 +49,7 @@ public class HomeWorkController {
              return "密码不正确";
         }catch (Exception e){
              e.printStackTrace();
+             return "系统错误";
         }
         return "SUCC";
     }

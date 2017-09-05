@@ -6,7 +6,7 @@
 </head>
 <body>
 
-chenggong
+${successMsg}
 
 
 </body>

@@ -7,8 +7,8 @@
 <body>
 
 <form action="${pageContext.request.contextPath}/homework/login" method="post">
-    用户名：<input type="text" name="userEnity.username"><br/>
-    密码：<input type="password" name="userEnity.password"><br/>
+    用户名：<input type="text" name="userName"><br/>
+    密码：<input type="password" name="password"><br/>
     <input type="submit" value="登录">
 </form>
 
