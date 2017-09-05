@@ -8,7 +8,8 @@
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd
                         http://www.springframework.org/schema/tx
                         http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <context:component-scan base-package="ssm.*"></context:component-scan>
+    <context:component-scan base-package="ssm.*,HomeWorkManager.*"></context:component-scan>
+
 
    <!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:properties/jdbc.properties"/>
@@ -51,11 +52,17 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:mapper/*.xml</value>
+                <value>classpath:mapper/HomeWork/*.xml</value>
+            </array>
+        </property>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="ssm.dao"/>
+        <property name="basePackage" value="ssm.dao,HomeWorkManager.dao"/>
+
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 

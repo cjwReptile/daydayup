@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/homework/login" method="post">
-    用户名：<input type="text" name="userEnity.username"><br/>
-    密码：<input type="password" name="userEnity.password"><br/>
+<form action="{request.contextPath}/HomeWorkManager/controller/login" method="post">
+    用户名：<input type="text" name="userBean.username"><br/>
+    密码：<input type="password" name="userBean.password"><br/>
     <input type="submit" value="登录">
 </form>
 
