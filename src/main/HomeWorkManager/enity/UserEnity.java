@@ -11,6 +11,9 @@ public class UserEnity {
 
     private String salt;
 
+    private boolean lock;
+
+    private Long id;
     public String getUserName() {
         return userName;
     }
@@ -34,4 +37,29 @@ public class UserEnity {
     public void setSalt(String salt) {
         this.salt = salt;
     }
+
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCredentialsSalt(){
+        return userName+salt;
+    }
+
+  /*  @Override
+    public int hashCode(){
+        return id!=null?id.hashCode():0;
+    }*/
 }

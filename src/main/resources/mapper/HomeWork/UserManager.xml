@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="HomeWorkManager.dao.UserDao">
+<mapper namespace="HomeWorkManager.dao.*">
 
     <select id="findUserByName" resultType="HomeWorkManager.enity.UserEnity">
         select username "userName",password "passWord" from users  where username=#{userName}
     </select>
+
+    <select id="findRoles" resultType="java.util.Set">
+        select role  from sys_roles r,sys_users u,sys_users_roles ur where
+        u.username=#{userName} and u.id=ur.userid and r.id=ur.roleid
+    </select>
+
+    <select id="findPermissions" resultType="java.util.Set">
+        select permission "permission"
+        from sys_roles r,sys_users u,sys_users_roles ur,sys_permissions p,sys_roles_permissions rp
+        where
+        u.username=#{userName} and u.id=ur.user_id and r.id=ur.role_id and r.id=rp.rold_id and p.id=rp.permission_id
+    </select>
+
+
+    <insert id="createUser">
+        insert into sys_users(username,password,salt)
+        values
+        (
+        #{userName},
+        #{passWord},
+        #{salt}
+        )
+    </insert>
+
+    <delete id="deleteUser">
+         delete from sys_users where id=#{userId}
+    </delete>
+
+    <delete id="unrelateUserAndRole">
+        delete from sys_users_roles where user_id=#{userId} and role_id=#{roleId}
+    </delete>
+
+    <!--角色 -->
+    <insert id ="createRole">
+        insert into sys_roles (id,role,description,lock)
+    </insert>
+
 </mapper>
 
