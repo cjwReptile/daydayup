@@ -11,7 +11,7 @@ public class Permissions {
 
     private String description;
 
-    private boolean lock;
+    private Boolean available=Boolean.FALSE;
 
     public Long getId() {
         return id;
@@ -37,11 +37,11 @@ public class Permissions {
         this.description = description;
     }
 
-    public boolean isLock() {
-        return lock;
+    public Boolean getAvailable() {
+        return available;
     }
 
-    public void setLock(boolean lock) {
-        this.lock = lock;
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 }

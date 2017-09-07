@@ -6,6 +6,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 
 /**
  * Created by cjw on 2017/9/5.
@@ -23,16 +24,13 @@ public class UserRealm extends AuthorizingRealm {
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String userName=(String)token.getPrincipal();
-        String passWord=new String(((char[])token.getCredentials()));
-        System.out.println(passWord);
         UserEnity userBean=userService.findUserByName(userName);
-        System.out.println(userBean.getPassword());
-        System.out.println(userBean.getUserName());
+        System.out.println(userBean.getUserName()+"||"+userBean.getPassword()+"||"+userBean.getSalt());
         if (userBean==null)
             throw new UnknownAccountException();
-        if(!passWord.equals(userBean.getPassword())){
-            throw new IncorrectCredentialsException();
-        }
-        return new SimpleAuthenticationInfo(userBean.getUserName(),userBean.getPassword(),"UserRealm");
+        SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
+             userBean.getUserName(),userBean.getPassword(), ByteSource.Util.bytes(userBean.getCredentialsSalt()),getName()
+        );
+         return authenticationInfo;
     }
 }

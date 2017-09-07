@@ -23,10 +23,30 @@
     </bean>
 
     <!-- 配置缓存管理器 -->
+    <!-- 缓存管理器 使用Ehcache实现 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="HomeWorkManager.credentials.RetryLimit">
+        <constructor-arg ref="cacheManager"/>
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="2"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
+
+
 
     <!-- 配置进行授权和认证的 Realm -->
     <bean id="myRealm" class="HomeWorkManager.realm.UserRealm">
         <property name="userService" ref="userService" />
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <property name="cachingEnabled" value="true"/>
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="authenticationCache"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>
     </bean>
     <bean id="userService" class="HomeWorkManager.service.serviceImpl.UserServiceImpl" />
     <!-- 配置 Shiro 的 SecurityManager Bean. -->

@@ -9,6 +9,7 @@
 <form action="${pageContext.request.contextPath}/homework/login" method="post">
     用户名：<input type="text" name="userName"><br/>
     密码：<input type="password" name="password"><br/>
+    ${failMsg}
     <input type="submit" value="登录">
 </form>
 

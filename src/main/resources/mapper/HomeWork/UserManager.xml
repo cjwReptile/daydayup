@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="HomeWorkManager.dao.*">
+<mapper namespace="HomeWorkManager.dao.UserDao">
 
     <select id="findUserByName" resultType="HomeWorkManager.enity.UserEnity">
-        select username "userName",password "passWord" from users  where username=#{userName}
+        select username "userName",password "password",salt "salt" from sys_users  where username=#{userName}
     </select>
 
     <select id="findRoles" resultType="java.util.Set">
@@ -24,7 +24,7 @@
         values
         (
         #{userName},
-        #{passWord},
+        #{password},
         #{salt}
         )
     </insert>
@@ -39,8 +39,49 @@
 
     <!--角色 -->
     <insert id ="createRole">
-        insert into sys_roles (id,role,description,lock)
+        insert into sys_roles (id,role,description,available)
+        values
+        (
+        #{id},
+        #{role},
+        #{description},
+        #{lock}
+        )
     </insert>
+
+    <delete id="deleteRole">
+        delete from sys_roles where id=#{id}
+    </delete>
+
+    <insert id ="relateRoleAndPermission">
+        insert into sys_roles (role_id,permission_id)
+        values
+        (
+        #{roleId},
+        #{permissionId}
+        )
+    </insert>
+
+
+    <delete id="unrelateRoleAndPermission">
+        delete from sys_roles_permissions where role_id=#{roleId} and permission_id=#{permissionId}
+    </delete>
+
+    <!--权限-->
+    <insert id ="createPermission">
+        insert into sys_permissions (id,permission,description,available)
+        values
+        (
+        #{id},
+        #{permissionId},
+        #{description},
+        #{lock}
+        )
+    </insert>
+
+    <delete id="deletePermission">
+        delete from sys_permissions where role_id=#{roleId} and permission_id=#{permissionId}
+    </delete>
 
 </mapper>
 

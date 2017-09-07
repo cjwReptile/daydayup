@@ -11,7 +11,7 @@ public class UserEnity {
 
     private String salt;
 
-    private boolean lock;
+    private Boolean avalible=Boolean.FALSE;
 
     private Long id;
     public String getUserName() {
@@ -38,12 +38,12 @@ public class UserEnity {
         this.salt = salt;
     }
 
-    public boolean isLock() {
-        return lock;
+    public Boolean getAvalible() {
+        return avalible;
     }
 
-    public void setLock(boolean lock) {
-        this.lock = lock;
+    public void setAvalible(Boolean avalible) {
+        this.avalible = avalible;
     }
 
     public Long getId() {

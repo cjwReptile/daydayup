@@ -6,10 +6,12 @@
 </head>
 <body>
 
-<form action="{request.contextPath}/HomeWorkManager/controller/login" method="post">
-    用户名：<input type="text" name="userBean.username"><br/>
-    密码：<input type="password" name="userBean.password"><br/>
+<form action="${pageContext.request.contextPath}/homework/login" method="post">
+    用户名：<input type="text" name="userName"><br/>
+    密码：<input type="password" name="password"><br/>
+
     <input type="submit" value="登录">
+    ${failMsg}
 </form>
 
 </body>
