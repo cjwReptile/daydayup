@@ -33,7 +33,7 @@ public class HomeWorkController {
    public ModelAndView login(UserEnity userEnity, Model model){
        System.out.println(userEnity.getUserName());
        System.out.println(userEnity.getPassword());
-       String page="";
+       String page="/homeworkjsp/success";
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
            page= "/homeworkjsp/fail";
 
