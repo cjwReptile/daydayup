@@ -36,6 +36,7 @@ public class RetryLimit extends HashedCredentialsMatcher {
            boolean flag=super.doCredentialsMatch(token,info);
            if(flag){
               passWordCache.remove(userName);
+               return true;
            }
 
            return true;

@@ -25,9 +25,10 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String userName=(String)token.getPrincipal();
         UserEnity userBean=userService.findUserByName(userName);
-        System.out.println(userBean.getUserName()+"||"+userBean.getPassword()+"||"+userBean.getSalt());
         if (userBean==null)
             throw new UnknownAccountException();
+        System.out.println(userBean.getUserName()+"||"+userBean.getPassword()+"||"+userBean.getSalt());
+
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
              userBean.getUserName(),userBean.getPassword(), ByteSource.Util.bytes(userBean.getCredentialsSalt()),getName()
         );

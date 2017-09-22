@@ -10,11 +10,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,29 +29,36 @@ public class HomeWorkController {
     private Map<String,String> map=new HashMap<String, String>();
 
    @RequestMapping(value="/login",method = RequestMethod.POST)
-   public ModelAndView login(UserEnity userEnity, Model model){
+   public @ResponseBody Map<String,String> login(@RequestBody UserEnity userEnity){
        System.out.println(userEnity.getUserName());
        System.out.println(userEnity.getPassword());
-       String page="/homeworkjsp/success";
+       map.put("flag","1");
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
-           page= "/homeworkjsp/fail";
+           map.put("flag","0");
 
        Subject subject= SecurityUtils.getSubject();
        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(userEnity.getUserName(),userEnity.getPassword());
        try {
            subject.login(usernamePasswordToken);
        }catch (UnknownAccountException e){
-           map.put("failMsg","账号不存在或者密码错误");
-           page= "/homeworkjsp/fail";
+           map.put("msg","账号不存在或者密码错误");
+           map.put("flag","0");
        }catch (ExcessiveAttemptsException e){
-           map.put("failMsg","登录次数过多");
-           page= "/homeworkjsp/login";
+           map.put("msg","登录次数过多");
+           map.put("flag","0");
        }catch (IncorrectCredentialsException e){
-           map.put("failMsg","密码错误");
-           page= "/homeworkjsp/login";
+           map.put("msg","密码错误");
+           map.put("flag","0");
        }
-       return new ModelAndView(page,map);
+       return map;
    }
+
+   @RequestMapping(value="/image")
+    public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request){
+       System.out.println(file.getSize()+"name");
+       return null;
+   }
+
     @RequestMapping(value = "/createUser",method = RequestMethod.POST)
     public void createUser(UserEnity userEnity){
            userService.createUser(userEnity);
@@ -61,4 +67,6 @@ public class HomeWorkController {
     public String toCreateUser(){
         return "/homeworkjsp/register";
     }
+
+
 }
