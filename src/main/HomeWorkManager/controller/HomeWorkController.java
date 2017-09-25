@@ -13,9 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by cjw on 2017/9/5.
@@ -54,9 +60,34 @@ public class HomeWorkController {
    }
 
    @RequestMapping(value="/image")
-    public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request){
+    public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request, HttpServletResponse response){
        System.out.println(file.getSize()+"name");
-       return null;
+       ServletContext sc=request.getSession().getServletContext();
+       String fileName=UUID.randomUUID()+file.getOriginalFilename();
+       map.put("flag","1");
+       String path=sc.getRealPath("/")+"statics/image/uploadImage/";
+       path=path.replaceAll("\\\\","/");
+       File f=new File(path);
+       FileOutputStream fos=null;
+       InputStream in=null;
+       if(!f.exists()){
+           f.mkdirs();
+       }
+       try {
+
+           fos=new FileOutputStream(path+fileName);
+           in=file.getInputStream();
+           int b=0;
+           while((b=in.read())!=-1){
+                fos.write(b);
+           }
+           fos.close();
+           in.close();
+       }catch (Exception e){
+           response.setStatus(500);
+       }
+
+       return map;
    }
 
     @RequestMapping(value = "/createUser",method = RequestMethod.POST)
