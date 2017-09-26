@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HomeWorkManager.dao.HomeWorkDao">
+
+    <insert id="saveHomeWorkInfo" parameterType="HomeWorkManager.enity.HomeWorkPo">
+        INSERT INTO homework_content
+        (
+        user_id,
+        content_authority,
+        content_description,
+        content_id
+        )VALUES
+        (
+        #{userId},
+        #{contentAuthority},
+        #{contentDescription},
+        #{contentId}
+        )
+
+    </insert>
+
+
+</mapper>

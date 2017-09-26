@@ -108,7 +108,7 @@
                         alert(name);
                         alert(pass);
                         $.ajax({
-                            url:"../daydayup/homework/login",
+                            url:"../daydayup/homework/createUser",
                             type:"post",
                             async:true,
                             data:{
