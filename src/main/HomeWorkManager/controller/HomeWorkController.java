@@ -1,5 +1,7 @@
 package HomeWorkManager.controller;
 
+import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.HomeWorkService;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -65,13 +68,15 @@ public class HomeWorkController {
        return map;
    }
 
-   @RequestMapping(value="/image")
-    public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request, HttpServletResponse response){
+   @RequestMapping(value="/workLocationInfo",method = RequestMethod.POST)
+    public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request, HttpServletResponse response,@RequestParam String contentId,@RequestParam String contentType){
        ServletContext sc=request.getSession().getServletContext();
        String fileName=UUID.randomUUID()+file.getOriginalFilename();
        map.put("flag","1");
        String startPath="http://localhost:8080/daydayup/";
        String endPath="statics/image/uploadImage/";
+
+       HomeWorkLocationPo homeWorkLocationPo=new HomeWorkLocationPo();
        String path=sc.getRealPath("/")+endPath;//存储到项目的路径
        String projectPath=startPath+endPath+fileName;//存储到数据库的url，前端能访问
        path=path.replaceAll("\\\\","/");
@@ -93,7 +98,10 @@ public class HomeWorkController {
        }catch (Exception e){
            response.setStatus(500);
        }
-
+       homeWorkLocationPo.setContentId(contentId);
+       homeWorkLocationPo.setContentUrl(projectPath);
+       homeWorkLocationPo.setContentType(contentType);
+       homeWorkService.saveContentLocationInfo(homeWorkLocationPo);
        return map;
    }
 
@@ -134,8 +142,11 @@ public class HomeWorkController {
     }
 
     @RequestMapping(value = "/homeWorkContent",method = RequestMethod.POST)
-    public void saveHomeWorkInfo(@RequestBody HomeWorkPo homeWorkPo){
+    public @ResponseBody Map<String,String> saveHomeWorkInfo(@RequestBody HomeWorkPo homeWorkPo){
+
         homeWorkService.saveHomeWorkInfo(homeWorkPo);
+        map.put("flag","1");
+        return map;
     }
 
 
@@ -148,5 +159,26 @@ public class HomeWorkController {
         return "/homeworkjsp/register";
     }
 
+    @RequestMapping(value = "/homeWorkKey",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Long> getHomeWorkKey(){
+        Map<String,Long> keyMap=new HashMap<String, Long>();
+        Long conentId=homeWorkService.getHomeWorkKey();
+        keyMap.put("key",conentId);
+        return keyMap;
+    }
 
-}
+
+    @RequestMapping(value="/homeWorkInfo")
+    public String homeWorkInfo(@RequestParam String admin,@RequestParam int limit,@RequestParam int offset){
+        List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo();
+        System.out.print(list.size());
+        return null;
+    }
+    @RequestMapping(value="/homeWorkInfo1")
+    public void homeWorkInfo1(){
+        List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo();
+        System.out.print(list.size());
+
+    }
+
+  }
