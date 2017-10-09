@@ -6,6 +6,7 @@ import HomeWorkManager.enity.HomeWorkPo;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.HomeWorkService;
 import HomeWorkManager.service.UserService;
+import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -175,9 +176,11 @@ public class HomeWorkController {
         return null;
     }
     @RequestMapping(value="/homeWorkInfo1")
-    public void homeWorkInfo1(){
+    public @ResponseBody String homeWorkInfo1(){
         List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo();
-        System.out.print(list.size());
+        String string= JSON.toJSONString(list);
+        return string;
+
 
     }
 

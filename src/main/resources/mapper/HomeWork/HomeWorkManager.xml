@@ -52,7 +52,7 @@
 
         <collection property="homeWorkLocationPos" column="userid" ofType="HomeWorkManager.enity.HomeWorkLocationPo">
             <id property="contentLocationId" column="content_location_id" javaType="Long" jdbcType="BIGINT" />
-            <result property="contentType" column="content_url" javaType="string" jdbcType="VARCHAR"/>
+            <result property="contentType" column="content_type" javaType="string" jdbcType="VARCHAR"/>
             <result property="contentUrl" column="content_url" javaType="string" jdbcType="VARCHAR"/>
             <result property="contentId" column="content_id" javaType="string" jdbcType="VARCHAR"/>
         </collection>
