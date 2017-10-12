@@ -21,6 +21,10 @@ public class HomeWorkInfoDTO {
 
     private String userName;
 
+    private int size;
+
+
+
     private List<HomeWorkLocationPo> homeWorkLocationPos;
 
     public List<HomeWorkLocationPo> getHomeWorkLocationPos() {
@@ -77,5 +81,13 @@ public class HomeWorkInfoDTO {
 
     public void setContentAuthority(String contentAuthority) {
         this.contentAuthority = contentAuthority;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

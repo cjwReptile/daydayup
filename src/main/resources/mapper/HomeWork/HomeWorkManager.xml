@@ -70,5 +70,6 @@
         homework_content as t1,
         homework_content_location as t2
         where t1.content_id=t2.content_id
+        order by t1.content_time desc
     </select>
 </mapper>
