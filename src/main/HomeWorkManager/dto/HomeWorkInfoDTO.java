@@ -23,6 +23,12 @@ public class HomeWorkInfoDTO {
 
     private int size;
 
+    private int score;
+
+    private String comment;
+
+    private int contentReaded;
+
 
 
     private List<HomeWorkLocationPo> homeWorkLocationPos;
@@ -89,5 +95,29 @@ public class HomeWorkInfoDTO {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public int getContentReaded() {
+        return contentReaded;
+    }
+
+    public void setContentReaded(int contentReaded) {
+        this.contentReaded = contentReaded;
     }
 }

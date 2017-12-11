@@ -1,11 +1,9 @@
 package test.controller;
 
-import HomeWorkManager.dto.HomeWorkInfoDTO;
 import HomeWorkManager.service.HomeWorkService;
 import ssm.service.DayDayUpService;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created by cjw on 2017/9/7.
@@ -19,7 +17,7 @@ public class Test {
 
     @org.junit.Test
     public void Test1111111(){
-        List<HomeWorkInfoDTO> lsit= homeWorkService.getHomeWorkInfo();
-        System.out.print(lsit.size());
+     //   List<HomeWorkInfoDTO> lsit= homeWorkService.getHomeWorkInfo();
+    //    System.out.print(lsit.size());
     }
 }

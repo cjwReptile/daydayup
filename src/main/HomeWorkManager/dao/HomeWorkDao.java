@@ -1,6 +1,7 @@
 package HomeWorkManager.dao;
 
 import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,8 @@ public interface HomeWorkDao {
 
     public void saveContentLocationInfo(HomeWorkLocationPo homeWorkLocationPo);
 
-    public List<HomeWorkInfoDTO> getHomeWorkInfo();
+    public List<HomeWorkInfoDTO> getHomeWorkInfo(String listType);
+
+    public void saveHomeWorkComment(HomeWorkCommentPo homeWorkCommentPo);
 
 }

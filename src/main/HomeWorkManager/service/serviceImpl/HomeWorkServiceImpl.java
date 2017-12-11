@@ -2,6 +2,7 @@ package HomeWorkManager.service.serviceImpl;
 
 import HomeWorkManager.dao.HomeWorkDao;
 import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
 import HomeWorkManager.service.HomeWorkService;
@@ -29,9 +30,13 @@ public class HomeWorkServiceImpl implements HomeWorkService{
     public void saveContentLocationInfo(HomeWorkLocationPo homeWorkLocationPo) {
         homeWorkDao.saveContentLocationInfo(homeWorkLocationPo);
     }
+    //作业列表
+    public List<HomeWorkInfoDTO> getHomeWorkInfo(String listType) {
+        return homeWorkDao.getHomeWorkInfo(listType);
+    }
 
-    public List<HomeWorkInfoDTO> getHomeWorkInfo() {
-        return homeWorkDao.getHomeWorkInfo();
+    public void saveHomeWorkComment(HomeWorkCommentPo homeWorkCommentPo) {
+        homeWorkDao.saveHomeWorkComment(homeWorkCommentPo);
     }
 
 }

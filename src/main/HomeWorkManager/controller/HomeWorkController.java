@@ -1,6 +1,7 @@
 package HomeWorkManager.controller;
 
 import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
 import HomeWorkManager.enity.UserEnity;
@@ -49,6 +50,7 @@ public class HomeWorkController {
            map.put("flag","0");
 
        Subject subject= SecurityUtils.getSubject();
+
        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(userEnity.getUserName(),userEnity.getPassword());
        try {
            subject.login(usernamePasswordToken);
@@ -171,17 +173,25 @@ public class HomeWorkController {
 
     @RequestMapping(value="/homeWorkInfo")
     public String homeWorkInfo(@RequestParam String admin,@RequestParam int limit,@RequestParam int offset){
-        List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo();
-        System.out.print(list.size());
+      //  List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo();
+      //  System.out.print(list.size());
         return null;
     }
-    @RequestMapping(value="/homeWorkInfo1")
-    public @ResponseBody String homeWorkInfo1(){
-        List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo();
+    @RequestMapping(value="/homeWorkInfo1",method = RequestMethod.POST)
+    public @ResponseBody String homeWorkInfo1(@RequestParam("listType") String listType){
+        List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo(listType);
         String string= JSON.toJSONString(list);
         return string;
 
 
     }
+    @RequestMapping(value="/homeworkContent",method = RequestMethod.POST)
+    public @ResponseBody Map<String,String> saveHomeWorkComment(@RequestBody HomeWorkCommentPo homeWorkCommentPo){
+        homeWorkService.saveHomeWorkComment(homeWorkCommentPo);
+        map.put("flag","1");
+        return map;
+    }
+
+
 
   }

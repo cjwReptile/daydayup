@@ -1,6 +1,7 @@
 package HomeWorkManager.service;
 
 import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
 
@@ -17,5 +18,7 @@ public interface HomeWorkService {
 
     public void saveContentLocationInfo(HomeWorkLocationPo homeWorkLocationPo);
 
-    public List<HomeWorkInfoDTO> getHomeWorkInfo();
+    public List<HomeWorkInfoDTO> getHomeWorkInfo(String listType);
+
+    public void saveHomeWorkComment(HomeWorkCommentPo homeWorkCommentPo);
 }

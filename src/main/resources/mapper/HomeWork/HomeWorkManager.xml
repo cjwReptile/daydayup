@@ -9,15 +9,16 @@
         content_authority,
         content_description,
         content_id,
-        content_time
-
+        content_time,
+        content_readed
         )VALUES
         (
         #{userName},
         #{contentAuthority},
         #{contentDescription},
         #{contentId},
-        NOW()
+        NOW(),
+        0
         )
 
     </insert>
@@ -48,7 +49,9 @@
         <result property="userName" column="user_name" javaType="string" jdbcType="VARCHAR"/>
         <result property="contentDescription" column="content_description" javaType="string" jdbcType="VARCHAR"/>
         <result property="contentTime" column="content_time" javaType="Date" jdbcType="TIMESTAMP"/>
-
+        <result property="contentReaded" column="content_readed" javaType="string" jdbcType="VARCHAR"/>
+        <result property="score" column="score" javaType="int" jdbcType="INTEGER"/>
+        <result property="comment" column="comment" javaType="String" jdbcType="VARCHAR"/>
 
         <collection property="homeWorkLocationPos" column="userid" ofType="HomeWorkManager.enity.HomeWorkLocationPo">
             <id property="contentLocationId" column="content_location_id" javaType="Long" jdbcType="BIGINT" />
@@ -64,12 +67,33 @@
         t1.content_description,
         t1.content_time,
         t1.user_name,
+        t1.content_readed,
         t2.content_url,
-        t2.content_type
+        t2.content_type,
+        t3.score,
+        t3.comment
         from
         homework_content as t1,
-        homework_content_location as t2
+        homework_content_location as t2,
+        homework_comment as t3
         where t1.content_id=t2.content_id
+        and t3.content_id=t1.content_id
+        and t1.content_readed=#{listType,javaType=String,jdbcType=VARCHAR}
+        and t1.content_authority='1'
         order by t1.content_time desc
     </select>
+
+    <insert id="saveHomeWorkComment">
+        insert into homework_comment
+        (
+        content_id,
+        comment,
+        score
+        )VALUES
+        (
+        #{contentId},
+        #{comment},
+        #{score}
+        )
+    </insert>
 </mapper>
