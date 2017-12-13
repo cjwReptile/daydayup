@@ -24,4 +24,6 @@ public interface HomeWorkDao {
 
     public void saveHomeWorkComment(HomeWorkCommentPo homeWorkCommentPo);
 
+    public void updateReaded(HomeWorkCommentPo homeWorkCommentPo);
+
 }

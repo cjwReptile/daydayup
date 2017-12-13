@@ -18,7 +18,7 @@
         #{contentDescription},
         #{contentId},
         NOW(),
-        0
+        '0'
         )
 
     </insert>
@@ -73,12 +73,10 @@
         t3.score,
         t3.comment
         from
-        homework_content as t1,
-        homework_content_location as t2,
-        homework_comment as t3
-        where t1.content_id=t2.content_id
-        and t3.content_id=t1.content_id
-        and t1.content_readed=#{listType,javaType=String,jdbcType=VARCHAR}
+        homework_content as t1
+        left join homework_content_location as t2 on t1.content_id=t2.content_id
+        left join homework_comment as t3 on t1.content_id=t3.content_id
+        where t1.content_readed=#{listType,javaType=String,jdbcType=VARCHAR}
         and t1.content_authority='1'
         order by t1.content_time desc
     </select>
@@ -96,4 +94,8 @@
         #{score}
         )
     </insert>
+
+    <update id="updateReaded">
+        UPDATE homework_content set content_readed="1" where content_id=#{contentId,javaType=long,jdbcType=BIGINT}
+    </update>
 </mapper>

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -44,16 +45,22 @@ public class HomeWorkController {
     private Map<String,String> map=new HashMap<String, String>();
 
    @RequestMapping(value="/login",method = RequestMethod.POST)
-   public @ResponseBody Map<String,String> login(@RequestBody UserEnity userEnity){
+   public @ResponseBody Map<String,String> login(@RequestBody UserEnity userEnity, HttpServletRequest request, HttpServletResponse response){
        map.put("flag","1");
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
            map.put("flag","0");
 
        Subject subject= SecurityUtils.getSubject();
-
+       Cookie[] cookie=request.getCookies();
+       System.out.println(cookie.length);
+       for(int i=0;i<cookie.length;i++){
+           cookie[i].setHttpOnly(false);
+       }
        UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(userEnity.getUserName(),userEnity.getPassword());
        try {
            subject.login(usernamePasswordToken);
+           subject.getSession().setAttribute("userLogin",userEnity);
+
        }catch (UnknownAccountException e){
            map.put("msg","账号不存在或者密码错误");
            map.put("flag","0");
@@ -178,7 +185,8 @@ public class HomeWorkController {
         return null;
     }
     @RequestMapping(value="/homeWorkInfo1",method = RequestMethod.POST)
-    public @ResponseBody String homeWorkInfo1(@RequestParam("listType") String listType){
+    public @ResponseBody String homeWorkInfo1(@RequestBody Map<String,String> map){
+        String listType=map.get("listType");
         List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo(listType);
         String string= JSON.toJSONString(list);
         return string;

@@ -8,6 +8,7 @@ import HomeWorkManager.enity.HomeWorkPo;
 import HomeWorkManager.service.HomeWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,8 +36,10 @@ public class HomeWorkServiceImpl implements HomeWorkService{
         return homeWorkDao.getHomeWorkInfo(listType);
     }
 
+    @Transactional
     public void saveHomeWorkComment(HomeWorkCommentPo homeWorkCommentPo) {
         homeWorkDao.saveHomeWorkComment(homeWorkCommentPo);
+        homeWorkDao.updateReaded(homeWorkCommentPo);
     }
 
 }

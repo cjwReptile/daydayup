@@ -27,7 +27,7 @@ public class HomeWorkInfoDTO {
 
     private String comment;
 
-    private int contentReaded;
+    private String contentReaded;
 
 
 
@@ -113,11 +113,11 @@ public class HomeWorkInfoDTO {
         this.comment = comment;
     }
 
-    public int getContentReaded() {
+    public String getContentReaded() {
         return contentReaded;
     }
 
-    public void setContentReaded(int contentReaded) {
+    public void setContentReaded(String contentReaded) {
         this.contentReaded = contentReaded;
     }
 }
