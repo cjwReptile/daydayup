@@ -27,7 +27,6 @@ public class UserRealm extends AuthorizingRealm {
         UserEnity userBean=userService.findUserByName(userName);
         if (userBean==null)
             throw new UnknownAccountException();
-        System.out.println(userBean.getUserName()+"||"+userBean.getPassword()+"||"+userBean.getSalt());
 
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
              userBean.getUserName(),userBean.getPassword(), ByteSource.Util.bytes(userBean.getCredentialsSalt()),getName()
