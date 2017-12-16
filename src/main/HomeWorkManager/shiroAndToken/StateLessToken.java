@@ -1,4 +1,4 @@
-package HomeWorkManager.Token;
+package HomeWorkManager.shiroAndToken;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
@@ -19,10 +19,8 @@ public class StateLessToken implements AuthenticationToken {
 
     private String token;
 
-    public StateLessToken(String clientKey,String digest,String exp,Map<String,?> parameters,String token){
+    public StateLessToken(String clientKey,Map<String,?> parameters,String token){
         this.clientKey=clientKey;
-        this.digest=digest;
-        this.exp=exp;
         this.parameters=parameters;
         this.token=token;
     }

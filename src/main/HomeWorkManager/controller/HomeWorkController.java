@@ -7,20 +7,16 @@ import HomeWorkManager.enity.HomeWorkPo;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.HomeWorkService;
 import HomeWorkManager.service.UserService;
+import HomeWorkManager.shiroAndToken.session.SessionManager;
+import HomeWorkManager.utils.JwtUtils;
 import com.alibaba.fastjson.JSON;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -42,6 +38,11 @@ public class HomeWorkController {
     @Autowired
     private HomeWorkService homeWorkService;
 
+
+
+    @Autowired
+    private SessionManager sessionManager;
+
     private Map<String,String> map=new HashMap<String, String>();
 
    @RequestMapping(value="/login",method = RequestMethod.POST)
@@ -49,33 +50,10 @@ public class HomeWorkController {
        map.put("flag","1");
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
            map.put("flag","0");
-
-       Subject subject= SecurityUtils.getSubject();
-       Cookie[] cookie=request.getCookies();
-       System.out.println(cookie.length);
-       for(int i=0;i<cookie.length;i++){
-           cookie[i].setHttpOnly(false);
-       }
-       UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(userEnity.getUserName(),userEnity.getPassword());
-       try {
-           subject.login(usernamePasswordToken);
-           subject.getSession().setAttribute("userLogin",userEnity);
-
-       }catch (UnknownAccountException e){
-           map.put("msg","账号不存在或者密码错误");
-           map.put("flag","0");
-           return map;
-       }catch (ExcessiveAttemptsException e){
-           map.put("msg","登录次数过多");
-           map.put("flag","0");
-           return map;
-       }catch (IncorrectCredentialsException e){
-           map.put("msg","密码错误");
-           map.put("flag","0");
-           return map;
-       }
-       map.put("username",(String)subject.getPrincipal());
-       return map;
+       String token=JwtUtils.encodeJwt(userEnity.getUserName(), SignatureAlgorithm.HS256);
+       sessionManager.addToSession(userEnity.getUserName(),token);
+       map.put("token",token);
+       return  map;
    }
 
    @RequestMapping(value="/workLocationInfo",method = RequestMethod.POST)
@@ -200,6 +178,8 @@ public class HomeWorkController {
         return map;
     }
 
-
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
 
   }

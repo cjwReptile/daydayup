@@ -17,6 +17,7 @@ public class JwtUtils {
     static PropertiesUtil propertiesUtil=new PropertiesUtil("/properties/daydayup.properties");
 
 
+/*
     public static void main(String[] args){
         Long cur=System.currentTimeMillis();
         String time=cur.toString();
@@ -24,14 +25,16 @@ public class JwtUtils {
         decodeJwt(jwt);
 
     }
+*/
 
 
 
-    public static String encodeJwt(String clientKey, String timestamp, SignatureAlgorithm signatureAlgorithm){
+    public static String encodeJwt(String clientKey,SignatureAlgorithm signatureAlgorithm){
         long curtime=System.currentTimeMillis();
         byte[] secretKey= DatatypeConverter.parseBase64Binary(propertiesUtil.getValue("secret"));
         JwtBuilder jwt= Jwts.builder();
         jwt.setSubject(clientKey);
+        String timestamp=propertiesUtil.getValue("timeout");
         if(null!=timestamp){
             System.out.println(Long.parseLong(timestamp));
             Date ex=new Date(curtime+Long.parseLong(timestamp));
