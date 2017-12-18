@@ -2,6 +2,7 @@ package HomeWorkManager.shiroAndToken.filter;
 
 import HomeWorkManager.shiroAndToken.StateLessToken;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
@@ -26,9 +27,9 @@ public class StateLessFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        String userName=servletRequest.getParameter("userName");
 
         HttpServletRequest httpServletRequest=(HttpServletRequest)servletRequest;
+        String userName=httpServletRequest.getHeader("username");
         Map<String, String[]> params = new HashMap<String, String[]>(servletRequest.getParameterMap());
         Cookie[] cookies=httpServletRequest.getCookies();
         String clentDegist=httpServletRequest.getHeader("clentDegist");
@@ -40,8 +41,16 @@ public class StateLessFilter extends AccessControlFilter {
 
         try {
             getSubject(servletRequest,servletResponse).login(stateLessToken);
-        }catch (Exception e)
+
+        }catch (AuthenticationException e){
+            System.out.println("llllllllllll");
+            e.printStackTrace();
+            onAjaxAuthFail(servletRequest,servletResponse);
+            return false;
+        }
+        catch (Exception e)
         {
+            System.out.println("mmmmmmmmmmmm");
             onAjaxAuthFail(servletRequest,servletResponse);
             return false;
         }

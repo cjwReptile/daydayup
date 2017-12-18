@@ -38,7 +38,7 @@ public class SessionManager {
         int oldTime=Integer.parseInt(operations.get(userName,token));
         int timeout=getTimeout();
         int cur=Integer.parseInt(getCur());
-        if(oldTime+timeout>cur){
+        if(oldTime+timeout<cur){
             //超时
             redisTemplate.delete(userName);
             return false;

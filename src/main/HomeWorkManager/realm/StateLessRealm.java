@@ -22,6 +22,11 @@ public class StateLessRealm extends AuthorizingRealm {
     private SessionManager sessionManager2;
 
     @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof StateLessToken;
+    }
+
+    @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         return null;
     }
@@ -32,8 +37,13 @@ public class StateLessRealm extends AuthorizingRealm {
         String userName=stateLessToken.getClientKey();
         String tokenStr=stateLessToken.getToken();
         String serverToken= JwtUtils.encodeJwt(userName, SignatureAlgorithm.HS256);
-        if(tokenStr==null||!sessionManager2.ValidateSession(userName,tokenStr))
+        if(tokenStr==null||!sessionManager2.ValidateSession(userName,tokenStr)){
+            System.out.println("aaaaaaaaaaaaaaaaa");
             throw new AuthenticationException("User " + userName + " authenticate fail in System");
+
+        }
+
+        System.out.println("sssssssssssssssssss");
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
                 userName,tokenStr,getName());
         return authenticationInfo;

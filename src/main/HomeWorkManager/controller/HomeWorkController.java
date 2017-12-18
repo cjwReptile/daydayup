@@ -41,7 +41,7 @@ public class HomeWorkController {
 
 
     @Autowired
-    private SessionManager sessionManager;
+    private SessionManager sessionManager2;
 
     private Map<String,String> map=new HashMap<String, String>();
 
@@ -51,7 +51,8 @@ public class HomeWorkController {
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
            map.put("flag","0");
        String token=JwtUtils.encodeJwt(userEnity.getUserName(), SignatureAlgorithm.HS256);
-       sessionManager.addToSession(userEnity.getUserName(),token);
+       sessionManager2.addToSession(userEnity.getUserName(),token);
+       map.put("username",userEnity.getUserName());
        map.put("token",token);
        return  map;
    }
@@ -179,7 +180,7 @@ public class HomeWorkController {
     }
 
     public void setSessionManager(SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
+        this.sessionManager2 = sessionManager;
     }
 
   }

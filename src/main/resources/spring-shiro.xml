@@ -69,8 +69,7 @@
         <property name="authorizationCacheName" value="authorizationCache"/>
     </bean>
     <!-- 配置无状态realm. -->
-    <bean id="stateLessRealm" class="HomeWorkManager.realm.UserRealm">
-        <property name="userService" ref="userService" />
+    <bean id="stateLessRealm" class="HomeWorkManager.realm.StateLessRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="false"/>
         <property name="authenticationCachingEnabled" value="true"/>
