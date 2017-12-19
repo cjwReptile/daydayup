@@ -29,7 +29,7 @@
                 /jsp/homeworkjsp/fail.jsp=anon
                 /*/login = anon
                 /logout = logout
-                /static/** = anon
+                /statics/** = anon
                 /css/** = anon
                 /images/** = anon
                 /trd/** = anon
@@ -51,9 +51,7 @@
     <!-- 凭证匹配器 -->
     <bean id="credentialsMatcher" class="HomeWorkManager.credentials.RetryLimit">
         <constructor-arg ref="cacheManager"/>
-        <property name="hashAlgorithmName" value="md5"/>
-        <property name="hashIterations" value="2"/>
-        <property name="storedCredentialsHexEncoded" value="true"/>
+
     </bean>
 
 

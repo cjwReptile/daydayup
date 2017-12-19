@@ -37,7 +37,7 @@ public class JwtUtils {
         String timestamp=propertiesUtil.getValue("timeout");
         if(null!=timestamp){
             System.out.println(Long.parseLong(timestamp));
-            Date ex=new Date(curtime+Long.parseLong(timestamp));
+            Date ex=new Date(Long.parseLong(timestamp));
             jwt.setExpiration(ex);
         }
       jwt.compressWith(CompressionCodecs.DEFLATE);

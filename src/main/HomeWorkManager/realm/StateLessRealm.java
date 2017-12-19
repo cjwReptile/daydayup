@@ -28,6 +28,7 @@ public class StateLessRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
         return null;
     }
 
@@ -45,7 +46,7 @@ public class StateLessRealm extends AuthorizingRealm {
 
         System.out.println("sssssssssssssssssss");
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
-                userName,tokenStr,getName());
+                userName,serverToken,getName());
         return authenticationInfo;
     }
 

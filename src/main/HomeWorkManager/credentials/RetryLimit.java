@@ -3,7 +3,7 @@ package HomeWorkManager.credentials;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by cjw on 2017/9/7.
  */
-public class RetryLimit extends HashedCredentialsMatcher {
+public class RetryLimit extends SimpleCredentialsMatcher {
 
         public Cache<String,AtomicInteger> passWordCache;
 
@@ -33,6 +33,7 @@ public class RetryLimit extends HashedCredentialsMatcher {
            if(atomicInteger.incrementAndGet()>5){
                throw new ExcessiveAttemptsException();
            }
+
            boolean flag=super.doCredentialsMatch(token,info);
            if(flag){
               passWordCache.remove(userName);

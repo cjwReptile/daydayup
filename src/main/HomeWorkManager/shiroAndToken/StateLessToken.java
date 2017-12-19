@@ -32,7 +32,7 @@ public class StateLessToken implements AuthenticationToken {
 
     @Override
     public Object getCredentials() {
-        return null;
+        return token;
     }
 
     public String getClientKey() {
