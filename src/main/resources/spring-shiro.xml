@@ -68,6 +68,7 @@
     </bean>
     <!-- 配置无状态realm. -->
     <bean id="stateLessRealm" class="HomeWorkManager.realm.StateLessRealm">
+        <property name="userService" ref="userService" />
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="false"/>
         <property name="authenticationCachingEnabled" value="true"/>
@@ -102,5 +103,6 @@
 
 
     <!-- 配置 Bean 后置处理器: 会自动的调用和 Spring 整合后各个组件的生命周期方法. -->
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
 </beans>

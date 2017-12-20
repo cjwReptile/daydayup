@@ -11,12 +11,14 @@ import HomeWorkManager.shiroAndToken.session.SessionManager;
 import HomeWorkManager.utils.JwtUtils;
 import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -51,6 +53,18 @@ public class HomeWorkController {
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
            map.put("flag","0");
        String token=JwtUtils.encodeJwt(userEnity.getUserName(), SignatureAlgorithm.HS256);
+       Cookie[] cookies=request.getCookies();
+       if(cookies==null){
+           System.out.print("null cookie");
+       }else{
+           for(Cookie cookie:cookies){
+               System.out.println(cookie.getName()+" cookie name");
+               cookie.setHttpOnly(false);
+           }
+       }
+       Cookie cookie=new Cookie(userEnity.getUserName(),"test");
+       cookie.setHttpOnly(false);
+       response.addCookie(cookie);
        sessionManager2.addToSession(userEnity.getUserName(),token);
        map.put("username",userEnity.getUserName());
        map.put("token",token);
@@ -164,6 +178,7 @@ public class HomeWorkController {
         return null;
     }
     @RequestMapping(value="/homeWorkInfo1",method = RequestMethod.POST)
+    @RequiresRoles("teacher")
     public @ResponseBody String homeWorkInfo1(@RequestBody Map<String,String> map){
         String listType=map.get("listType");
         List<HomeWorkInfoDTO>  list =homeWorkService.getHomeWorkInfo(listType);
