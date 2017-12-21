@@ -4,6 +4,7 @@ import HomeWorkManager.utils.PropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +68,13 @@ public class SessionManager {
 
     public String getCur(){
         return String.valueOf(System.currentTimeMillis()/1000);
+    }
+
+    public String getLoginTime(String userName,String token){
+        if(StringUtils.isEmpty(userName)||StringUtils.isEmpty(token))
+            return null;
+        HashOperations<Serializable,String,String>operations=redisTemplate.opsForHash();
+        return operations.get(userName,token);
     }
 
 
