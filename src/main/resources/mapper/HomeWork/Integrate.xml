@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HomeWorkManager.dao.IntegrateDao">
+
+    <insert id="insertIntoParentPlate" parameterType="HomeWorkManager.enity.Integrate.IntegratePlateParent">
+          insert into hw_plate_parent(plate_name, plate_belong, create_id,create_time)
+          VALUES
+          (
+          #{plateName},
+          #{plateBelong},
+          #{createId},
+          NOW()
+          )
+    </insert>
+
+</mapper>
