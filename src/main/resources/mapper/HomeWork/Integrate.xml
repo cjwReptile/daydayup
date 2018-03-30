@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="HomeWorkManager.dao.IntegrateDao">
 
+    <resultMap id="plateModel" type="HomeWorkManager.dto.IntegrateInfoDto">
+        <id property="id" column="id" javaType="Integer" jdbcType="INTEGER" />
+        <result property="plateName" column="plate_name" javaType="string" jdbcType="VARCHAR"/>
+        <result property="plateBolong" column="plate_belong" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="createId" column="create_id" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+
+        <collection property="list" column="" ofType="HomeWorkManager.enity.Integrate.IntegratePlateSon">
+            <id property="id" column="id" javaType="Integer" jdbcType="INTEGER" />
+            <result property="parentId" column="parent_id" javaType="Integer" jdbcType="INTEGER"/>
+            <result property="plateNameSon" column="plate_name_son" javaType="string" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
     <insert id="insertIntoParentPlate" parameterType="HomeWorkManager.enity.Integrate.IntegratePlateParent">
           insert into hw_plate_parent(plate_name, plate_belong, create_id,create_time)
           VALUES
@@ -12,5 +26,19 @@
           NOW()
           )
     </insert>
+
+    <select id="getPlateParent" resultMap="plateModel">
+        select
+        t1.id,
+        t1.plate_belong,
+        t1.create_time,
+        t1.plate_name,
+        t2.id,
+        t2.parent_id,
+        t2.plate_name_son
+        from hw_plate_parent t1
+        LEFT JOIN hw_plate_son t2  ON t1.id = t2.parent_id
+        ORDER by t1.id desc
+    </select>
 
 </mapper>
