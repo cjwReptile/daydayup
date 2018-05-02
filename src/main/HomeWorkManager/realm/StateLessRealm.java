@@ -56,8 +56,6 @@ public class StateLessRealm extends AuthorizingRealm {
             throw new AuthenticationException("User " + userName + " authenticate fail in System");
 
         }
-
-        System.out.println("sssssssssssssssssss");
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
                 userName,serverToken,getName());
         return authenticationInfo;
