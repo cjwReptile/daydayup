@@ -39,38 +39,34 @@ public class HomeWorkController {
     @Autowired
     private HomeWorkService homeWorkService;
 
-
-
     @Autowired
     private SessionManager sessionManager2;
 
 
-
-    private ThreadLocal<Map<String,String>> localSession=new ThreadLocal<>();
+    HashMap<String,String> map=new HashMap<>();
 
    @RequestMapping(value="/login",method = RequestMethod.POST)
    public @ResponseBody Map<String,String> login(@RequestBody UserEnity userEnity, HttpServletRequest request, HttpServletResponse response){
        HashMap<String,String> map=new HashMap<>();
-       localSession.set(map);
-       localSession.get().put("flag","1");
-       localSession.get().put("flag","1");
+       map.put("flag","1");
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
            map.put("flag","0");
 
        String token=JwtUtils.encodeJwt(userEnity.getUserName(), SignatureAlgorithm.HS256);
        sessionManager2.addToSession(userEnity.getUserName(),token);
-       localSession.get().put("loginTime",sessionManager2.getLoginTime(userEnity.getUserName(),token));
-       localSession.get().put("username",userEnity.getUserName());
-       localSession.get().put("roles",JSON.toJSONString(userService.findRoles(userEnity.getUserName())));
-       localSession.get().put("token",token);
-       return  localSession.get();
+       map.put("loginTime",sessionManager2.getLoginTime(userEnity.getUserName(),token));
+       map.put("username",userEnity.getUserName());
+       map.put("roles",JSON.toJSONString(userService.findRoles(userEnity.getUserName())));
+       map.put("token",token);
+       return  map;
    }
 
    @RequestMapping(value="/workLocationInfo",method = RequestMethod.POST)
     public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request, HttpServletResponse response,@RequestParam String contentId,@RequestParam String contentType){
+       HashMap<String,String> map=new HashMap<>();
        ServletContext sc=request.getSession().getServletContext();
        String fileName=UUID.randomUUID()+file.getOriginalFilename();
-       localSession.get().put("flag","1");
+       map.put("flag","1");
        String startPath="http://localhost:8080/daydayup/";
        String endPath="statics/image/uploadImage/";
 
@@ -100,17 +96,18 @@ public class HomeWorkController {
        homeWorkLocationPo.setContentUrl(projectPath);
        homeWorkLocationPo.setContentType(contentType);
        homeWorkService.saveContentLocationInfo(homeWorkLocationPo);
-       return localSession.get();
+       return map;
    }
 
     @RequestMapping(value="/imageTest")
     public @ResponseBody Map<String,String > imageUploadTest(@RequestParam("file")CommonsMultipartFile[] file, HttpServletRequest request, HttpServletResponse response,@RequestParam String contentId){
+        HashMap<String,String> map=new HashMap<>();
         ServletContext sc=request.getSession().getServletContext();
-        System.out.println(contentId);
+        map.put("flag","1");
         for(int i=0;i<file.length;i++){
             String fileName=UUID.randomUUID()+file[i].getOriginalFilename();
-            localSession.get().put("flag","1");
-            String startPath="http://localhost:8080/daydayup/";
+
+            String startPath="http://localhost:80/daydayup/";
             String endPath="statics/image/uploadImage/";
             String path=sc.getRealPath("/")+endPath;//存储到项目的路径
             String projectPath=startPath+endPath+fileName;//存储到数据库的url，前端能访问
@@ -136,15 +133,15 @@ public class HomeWorkController {
         }
 
 
-        return localSession.get();
+        return map;
     }
 
     @RequestMapping(value = "/homeWorkContent",method = RequestMethod.POST)
     public @ResponseBody Map<String,String> saveHomeWorkInfo(@RequestBody HomeWorkPo homeWorkPo){
-
+        HashMap<String,String> map=new HashMap<>();
         homeWorkService.saveHomeWorkInfo(homeWorkPo);
-        localSession.get().put("flag","1");
-        return localSession.get();
+        map.put("flag","1");
+        return map;
     }
 
 
@@ -184,9 +181,10 @@ public class HomeWorkController {
     }
     @RequestMapping(value="/homeworkContent",method = RequestMethod.POST)
     public @ResponseBody Map<String,String> saveHomeWorkComment(@RequestBody HomeWorkCommentPo homeWorkCommentPo){
+        HashMap<String,String> map=new HashMap<>();
         homeWorkService.saveHomeWorkComment(homeWorkCommentPo);
-        localSession.get().put("flag","1");
-        return localSession.get();
+        map.put("flag","1");
+        return map;
     }
 
 

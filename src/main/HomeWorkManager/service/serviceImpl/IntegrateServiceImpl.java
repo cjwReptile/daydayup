@@ -23,6 +23,7 @@ public class IntegrateServiceImpl implements IntegrateService{
 
     @Override
     public List<IntegrateInfoDto> getPlateParent(UserEnity userEnity) {
-       return integrateDao.getPlateParent(userEnity);
+
+        return integrateDao.getPlateParent(userEnity);
     }
 }
