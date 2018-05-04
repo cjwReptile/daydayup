@@ -5,6 +5,7 @@ import HomeWorkManager.dto.IntegrateInfoDto;
 import HomeWorkManager.enity.Integrate.IntegratePlateParent;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.IntegrateService;
+import HomeWorkManager.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,12 @@ public class IntegrateServiceImpl implements IntegrateService{
 
     @Override
     public List<IntegrateInfoDto> getPlateParent(UserEnity userEnity) {
+        List<IntegrateInfoDto> list=integrateDao.getPlateParent(userEnity);
+        if(CollectionUtil.isNotEmpty(list)){
+            for(IntegrateInfoDto dto:list){
 
-        return integrateDao.getPlateParent(userEnity);
+            }
+        }
+        return null;
     }
 }
