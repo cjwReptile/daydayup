@@ -5,9 +5,10 @@
     <resultMap id="plateModel" type="HomeWorkManager.dto.IntegrateInfoDto">
         <id property="id" column="id" javaType="Integer" jdbcType="INTEGER" />
         <result property="plateName" column="plate_name" javaType="string" jdbcType="VARCHAR"/>
-        <result property="plateBolong" column="plate_belong" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="plateBelong" column="plate_belong" javaType="string" jdbcType="VARCHAR"/>
         <result property="createId" column="create_id" javaType="Integer" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" javaType="Date" jdbcType="TIMESTAMP"/>
 
         <collection property="list" column="" ofType="HomeWorkManager.enity.Integrate.IntegratePlateSon">
             <id property="id" column="id" javaType="Integer" jdbcType="INTEGER" />
@@ -17,12 +18,13 @@
     </resultMap>
 
     <insert id="insertIntoParentPlate" parameterType="HomeWorkManager.enity.Integrate.IntegratePlateParent">
-          insert into hw_plate_parent(plate_name, plate_belong, create_id,create_time)
+          insert into hw_plate_parent(plate_name, plate_belong, create_id,create_time,update_time)
           VALUES
           (
           #{plateName},
           #{plateBelong},
           #{createId},
+          NOW(),
           NOW()
           )
     </insert>
@@ -33,6 +35,7 @@
         t1.plate_belong,
         t1.create_time,
         t1.plate_name,
+        t1.update_time,
         t2.id,
         t2.parent_id,
         t2.plate_name_son
@@ -46,5 +49,10 @@
 
         ORDER by t1.id desc
     </select>
+
+    <update id="updatePlateParent">
+        update hw_plate_parent set plate_name=#{plateName}
+        where plate_belong=#{plateBelong}
+    </update>
 
 </mapper>

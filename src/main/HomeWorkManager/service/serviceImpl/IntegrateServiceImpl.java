@@ -6,6 +6,7 @@ import HomeWorkManager.enity.Integrate.IntegratePlateParent;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.IntegrateService;
 import HomeWorkManager.utils.CollectionUtil;
+import HomeWorkManager.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,9 @@ public class IntegrateServiceImpl implements IntegrateService{
         List<IntegrateInfoDto> list=integrateDao.getPlateParent(userEnity);
         if(CollectionUtil.isNotEmpty(list)){
             for(IntegrateInfoDto dto:list){
-
+                dto.setUpdateTimeStr(DateUtil.formatDate("yyyy-MM-dd",dto.getUpdateTime()));
             }
+            return list;
         }
         return null;
     }

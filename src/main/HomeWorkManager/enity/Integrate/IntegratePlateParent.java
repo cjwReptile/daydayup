@@ -8,7 +8,7 @@ public class IntegratePlateParent {
 
     private String plateName;
 
-    private int parentBelong;
+    private String plateBelong;
 
     private int createId;
 
@@ -38,19 +38,19 @@ public class IntegratePlateParent {
         this.plateName = plateName;
     }
 
-    public int getParentBelong() {
-        return parentBelong;
-    }
-
-    public void setParentBelong(int parentBelong) {
-        this.parentBelong = parentBelong;
-    }
-
     public int getCreateId() {
         return createId;
     }
 
     public void setCreateId(int createId) {
         this.createId = createId;
+    }
+
+    public String getPlateBelong() {
+        return plateBelong;
+    }
+
+    public void setPlateBelong(String plateBelong) {
+        this.plateBelong = plateBelong;
     }
 }
