@@ -7,10 +7,7 @@ import HomeWorkManager.enums.StateEnum;
 import HomeWorkManager.service.IntegrateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +21,10 @@ public class IntegrateController {
     IntegrateService integrateService;
 
     @RequestMapping(value = "/plateParent",method = RequestMethod.POST)
-    public Map<String,Object> insertPlateParent(IntegratePlateParent integratePlateParent){
+    public Map<String,Object> insertPlateParent(@RequestParam IntegratePlateParent params){
         Map<String,Object> map=new HashMap<>();
         try {
-            integrateService.insertIntoParentPlate(integratePlateParent);
+            integrateService.insertIntoParentPlate(params);
             map.put("flag",StateEnum.SUCCESS.getValue());
         }catch (Exception e){
             map.put("flag",StateEnum.FAILED.getValue());
