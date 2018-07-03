@@ -13,7 +13,7 @@
         <collection property="list" column="" ofType="HomeWorkManager.enity.Integrate.IntegratePlateSon">
             <id property="id" column="id" javaType="Integer" jdbcType="INTEGER" />
             <result property="parentId" column="parent_id" javaType="Integer" jdbcType="INTEGER"/>
-            <result property="plateNameSon" column="plate_name_son" javaType="string" jdbcType="VARCHAR"/>
+            <result property="plateName" column="plate_name_son" javaType="string" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
 
@@ -43,16 +43,69 @@
         LEFT JOIN hw_plate_son t2  ON t1.id = t2.parent_id
 
         where 1=1
-        <if test="id!=null" >
-           and t1.create_id=#{id}
-        </if>
+
+
+        ORDER by t1.id desc
+    </select>
+
+    <select id="getPlateSon" resultType="HomeWorkManager.enity.Integrate.IntegratePlateSon">
+        select
+        t1.id "id",
+        t1.parent_id "parentId",
+        t1.plate_name_son "plateName",
+        t1.create_time "createTime",
+        t1.update_time "updateTime"
+        from hw_plate_son t1
+
+        where 1=1
+
+        and
+        t1.parent_id=#{id}
 
         ORDER by t1.id desc
     </select>
 
     <update id="updatePlateParent">
         update hw_plate_parent set plate_name=#{plateName}
-        where plate_belong=#{plateBelong}
+        where id=#{id}
+    </update>
+
+    <delete id="deletePlateParent">
+        delete from hw_plate_parent
+        where id=#{id}
+    </delete>
+
+    <select id="getScoreInfo" resultType="HomeWorkManager.enity.Integrate.IntegratePlateScore">
+        select student_belong "stuBelong",
+        id "id",
+        score "score",
+        teacher_belong "teaBelong",
+        belong_plate "belongPlate"
+
+        from hw_plate_score
+        where teacher_belong = #{teaBelong}
+
+    </select>
+
+    <insert id="insertScoreInfo">
+         insert into hw_plate_score (belong_plate, score, student_belong, create_time, teacher_belong, week_count, month_count, term_count)
+         values (#{belongPlate},#{score},#{stuBelong},NOW(),#{teaBelong},#{weekCount},#{monthCount},#{termCount})
+
+    </insert>
+
+    <insert id="insertIntoSonPlate">
+        insert into hw_plate_son (parent_id, plate_name_son,create_time) values (#{parentId},#{plateName},NOW())
+
+    </insert>
+
+    <delete id="deletePlateSon">
+        delete from hw_plate_son
+        where id=#{id}
+    </delete>
+
+    <update id="updatePlateSon">
+        update hw_plate_son set plate_name_son=#{plateName},update_time=NOW()
+        where id=#{id}
     </update>
 
 </mapper>

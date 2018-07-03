@@ -8,7 +8,17 @@ public class IntegratePlateScore {
 
     private int belongPlate;
 
-    private int studentId;
+    private String teabelong;
+
+    private String stuBelong;
+
+    public String getTeabelong() {
+        return teabelong;
+    }
+
+    public void setTeabelong(String teabelong) {
+        this.teabelong = teabelong;
+    }
 
     public int getId() {
         return id;
@@ -34,11 +44,11 @@ public class IntegratePlateScore {
         this.belongPlate = belongPlate;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public String getStuBelong() {
+        return stuBelong;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setStuBelong(String stuBelong) {
+        this.stuBelong = stuBelong;
     }
 }

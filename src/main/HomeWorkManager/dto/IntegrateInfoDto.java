@@ -21,6 +21,8 @@ public class IntegrateInfoDto {
 
     private String updateTimeStr;
 
+    private int parentId;
+
     private List<IntegratePlateSon> list;
 
     public int getId() {
@@ -86,5 +88,13 @@ public class IntegrateInfoDto {
 
     public void setUpdateTimeStr(String updateTimeStr) {
         this.updateTimeStr = updateTimeStr;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 }

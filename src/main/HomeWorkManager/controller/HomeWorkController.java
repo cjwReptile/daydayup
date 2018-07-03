@@ -46,7 +46,7 @@ public class HomeWorkController {
     HashMap<String,String> map=new HashMap<>();
 
    @RequestMapping(value="/login",method = RequestMethod.POST)
-   public @ResponseBody Map<String,String> login(@RequestBody UserEnity userEnity, HttpServletRequest request, HttpServletResponse response){
+   public @ResponseBody Map<String,String> login(UserEnity userEnity, HttpServletRequest request, HttpServletResponse response){
        HashMap<String,String> map=new HashMap<>();
        map.put("flag","1");
        if(userEnity.getUserName()==null||userEnity.getPassword()==null)
