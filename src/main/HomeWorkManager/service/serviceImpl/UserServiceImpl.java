@@ -1,6 +1,8 @@
 package HomeWorkManager.service.serviceImpl;
 
 import HomeWorkManager.dao.UserDao;
+import HomeWorkManager.dto.StudentDto;
+import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.UserService;
 import HomeWorkManager.utils.PassWordUtil;
@@ -22,19 +24,23 @@ public class UserServiceImpl implements UserService{
         return userDao.findUserByName(userName);
     }
 
+    @Override
     public void createUser(UserEnity userEnity) {
         PassWordUtil.encryptPassword(userEnity);
         userDao.createUser(userEnity);
     }
 
+    @Override
     public void deleteUser(Long userId) {
         userDao.deleteUser(userId);
     }
 
+    @Override
     public void updateUser(UserEnity userEnity) {
         userDao.updateUser(userEnity);
     }
 
+    @Override
     public void relateUserAndRole(Long userId, Long... roleIds) {
         if(roleIds==null||roleIds.length==0)
             return;
@@ -43,6 +49,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
     public void unrelateUserAndRole(Long userId, Long... roleIds) {
         if(roleIds==null||roleIds.length==0)
             return;
@@ -51,11 +58,24 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
     public Set<String> findRoles(String userName) {
         return userDao.findRoles(userName);
     }
 
+    @Override
     public Set<String> findPermissions(String userName) {
         return userDao.findPermissions(userName);
+    }
+
+    @Override
+    public StudentDto selectStudentInfoByUserId(String userId) {
+        StudentDto dto= userDao.selectStudentInfoByUserId(userId);
+        return dto;
+    }
+
+    @Override
+    public TeacherDto selectTeacherInfoByUserId(String userId) {
+        return userDao.selectTeacherInfoByUserId(userId);
     }
 }

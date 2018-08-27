@@ -11,9 +11,13 @@ public class UserEnity {
 
     private String salt;
 
+    private String userId;
+
     private Boolean avalible=Boolean.FALSE;
 
     private Long id;
+
+    private Integer type;
     public String getUserName() {
         return userName;
     }
@@ -58,7 +62,23 @@ public class UserEnity {
         return userName+salt;
     }
 
-  /*  @Override
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    /*  @Override
     public int hashCode(){
         return id!=null?id.hashCode():0;
     }*/

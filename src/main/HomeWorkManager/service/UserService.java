@@ -1,5 +1,7 @@
 package HomeWorkManager.service;
 
+import HomeWorkManager.dto.StudentDto;
+import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.UserEnity;
 
 import java.util.Set;
@@ -24,5 +26,9 @@ public interface UserService {
     Set<String> findRoles(String userName);
 
     Set<String> findPermissions(String userName);
+
+    public StudentDto selectStudentInfoByUserId(String userId);
+
+    public TeacherDto selectTeacherInfoByUserId(String userId);
 
 }

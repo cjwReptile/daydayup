@@ -3,7 +3,11 @@
 <mapper namespace="HomeWorkManager.dao.UserDao">
 
     <select id="findUserByName" resultType="HomeWorkManager.enity.UserEnity">
-        select username "userName",password "password",salt "salt" from sys_users  where username=#{userName}
+        select username "userName",password "password",salt "salt",
+         user_id "userId",
+         type "type"
+         from
+        sys_users  where username=#{userName}
     </select>
 
     <select id="findRoles" resultType="java.lang.String">
@@ -82,6 +86,25 @@
     <delete id="deletePermission">
         delete from sys_permissions where role_id=#{roleId} and permission_id=#{permissionId}
     </delete>
+
+    <select id="selectTeacherInfoByUserId" resultType="HomeWorkManager.dto.TeacherDto">
+        select id "id",
+        teacher_id "teacherId",
+        teacher_name "teacherName",
+        teacher_type "teacherType"
+        from hw_teacher where user_id=#{userId}
+    </select>
+
+    <select id="selectStudentInfoByUserId" resultType="HomeWorkManager.dto.StudentDto">
+        select a.id "id",
+        a.user_id "userId",
+        a.student_id "studentId",
+        a.student_name "studentName",
+        b.teacher_id "teacherId"
+        from hw_student a
+        left join hw_tea_stu b on a.student_id=b.student_id
+        where a.user_id=#{userId}
+    </select>
 
 </mapper>
 

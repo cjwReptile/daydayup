@@ -17,15 +17,15 @@ public class JwtUtils {
     static PropertiesUtil propertiesUtil=new PropertiesUtil("/properties/daydayup.properties");
 
 
-/*
-    public static void main(String[] args){
+
+   /* public static void main(String[] args){
         Long cur=System.currentTimeMillis();
         String time=cur.toString();
-        String jwt=encodeJwt("mwy",time,SignatureAlgorithm.HS256);
-        decodeJwt(jwt);
+        String jwt=encodeJwt("mwy",SignatureAlgorithm.HS256);
+        Claims claims=decodeJwt(jwt);
+        System.out.println("");
+    }*/
 
-    }
-*/
 
 
 
@@ -36,8 +36,7 @@ public class JwtUtils {
         jwt.setSubject(clientKey);
         String timestamp=propertiesUtil.getValue("timeout");
         if(null!=timestamp){
-            System.out.println(Long.parseLong(timestamp));
-            Date ex=new Date(Long.parseLong(timestamp));
+            Date ex=new Date(Long.parseLong(timestamp)*60L*1000+curtime);
             jwt.setExpiration(ex);
         }
       jwt.compressWith(CompressionCodecs.DEFLATE);

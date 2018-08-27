@@ -2,6 +2,8 @@ package HomeWorkManager.service.serviceImpl;
 
 import HomeWorkManager.dao.IntegrateDao;
 import HomeWorkManager.dto.IntegrateInfoDto;
+import HomeWorkManager.dto.IntegrateScoreDto;
+import HomeWorkManager.enity.Integrate.DayDayUpBo;
 import HomeWorkManager.enity.Integrate.IntegratePlateParent;
 import HomeWorkManager.enity.Integrate.IntegratePlateScore;
 import HomeWorkManager.enity.Integrate.IntegratePlateSon;
@@ -9,8 +11,11 @@ import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.IntegrateService;
 import HomeWorkManager.utils.CollectionUtil;
 import HomeWorkManager.utils.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +47,12 @@ public class IntegrateServiceImpl implements IntegrateService{
         return null;
     }
 
+
     @Override
+    @Transactional
     public void deletePlateParent(int id) {
          integrateDao.deletePlateParent(id);
+         integrateDao.deletePlateSonByParentId(id);
     }
 
     @Override
@@ -79,26 +87,27 @@ public class IntegrateServiceImpl implements IntegrateService{
     }
 
     @Override
-    public List<Map<String, Object>> getScoreInfo(String teaBelong) {
+    public List<Map<String, Object>> getScoreInfo(IntegrateScoreDto dto) {
 
         List<Map<String,Object>> resultMap = new ArrayList<>();
-        List<IntegratePlateScore> list=integrateDao.getScoreInfo(teaBelong);
+        List<IntegrateScoreDto> list=integrateDao.getScoreInfo(dto);
         String t_name = "";
         String id = "";
         String key= "";
         Map<String,Map<String,Object>> businessMap = new HashMap<>();
         if(CollectionUtil.isNotEmpty(list)){
-            for (IntegratePlateScore enity : list){
-                if(businessMap.get(enity.getStuBelong())==null){
+            for (IntegrateScoreDto enity : list){
+                if(businessMap.get(enity.getStudentId())==null){
                     Map<String,Object> mid = new HashMap<>();
-                    t_name = enity.getStuBelong();
+                    t_name = enity.getStudentId();
                     id = enity.getBelongPlate()+"";
                     mid.put(id,enity.getScore());
                     mid.put("name",t_name);
-                    businessMap.put(enity.getStuBelong(),mid);
+                    mid.put("studentName",enity.getStudentName());
+                    businessMap.put(enity.getStudentId(),mid);
                 }else {
                     id = enity.getBelongPlate()+"";
-                    businessMap.get(enity.getStuBelong()).put(id,enity.getScore());
+                    businessMap.get(enity.getStudentId()).put(id,enity.getScore());
                 }
             }
         }
@@ -113,6 +122,39 @@ public class IntegrateServiceImpl implements IntegrateService{
             }
         }
         return resultMap;
+    }
+
+    @Override
+    public boolean saveScoreInfo(DayDayUpBo bo) {
+         Map<String,Object> dataMap=bo.getDataMap();
+         String key="";
+         Integer value=0;
+         String[] keyArray=null;
+         Map<String,Map<String,Integer>> result = new HashMap<>();
+         List<IntegratePlateScore> dataList=new ArrayList<>();
+         try {
+             for(Map.Entry<String,Object> entry : dataMap.entrySet()){
+                 key = entry.getKey();
+                 value = Integer.valueOf((String)entry.getValue());
+                 if(null == value){
+                     continue;
+                 }
+                 keyArray=key.split("_");
+                 IntegratePlateScore score = new IntegratePlateScore();
+                 score.setTeaBelong(bo.getTeaBelong());
+                 score.setStuBelong(keyArray[0]);
+                 score.setBelongPlate(Integer.valueOf(keyArray[1]));
+                 score.setScore(value);
+                 score.setCreateTime(bo.getTime());
+                 dataList.add(score);
+             }
+             integrateDao.saveScoreInfo(dataList);
+         }catch (Exception e){
+             e.printStackTrace();
+             return false;
+         }
+         return true;
+
     }
 
 

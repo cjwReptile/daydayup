@@ -42,16 +42,13 @@ public class StateLessFilter extends AccessControlFilter {
 
         try {
             getSubject(servletRequest,servletResponse).login(stateLessToken);
-
         }catch (AuthenticationException e){
-            System.out.println("llllllllllll");
             e.printStackTrace();
             onAjaxAuthFail(servletRequest,servletResponse);
             return false;
         }
         catch (Exception e)
         {
-            System.out.println("mmmmmmmmmmmm");
             onAjaxAuthFail(servletRequest,servletResponse);
             return false;
         }

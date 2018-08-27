@@ -1,5 +1,7 @@
 package HomeWorkManager.dao;
 
+import HomeWorkManager.dto.StudentDto;
+import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.UserEnity;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +30,10 @@ public interface UserDao {
     Set<String> findRoles(String userName);
 
     Set<String> findPermissions(String userName);
+
+    StudentDto selectStudentInfoByUserId(String userId);
+
+    TeacherDto selectTeacherInfoByUserId(String userId);
 
 
 

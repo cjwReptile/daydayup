@@ -1,6 +1,8 @@
 package HomeWorkManager.service;
 
 import HomeWorkManager.dto.IntegrateInfoDto;
+import HomeWorkManager.dto.IntegrateScoreDto;
+import HomeWorkManager.enity.Integrate.DayDayUpBo;
 import HomeWorkManager.enity.Integrate.IntegratePlateParent;
 import HomeWorkManager.enity.Integrate.IntegratePlateSon;
 import HomeWorkManager.enity.UserEnity;
@@ -26,6 +28,7 @@ public interface IntegrateService {
 
     public void updatePlateSon (int id,String plateName);
 
-    public List<Map<String,Object>> getScoreInfo(String teaBelong);
+    public List<Map<String,Object>> getScoreInfo(IntegrateScoreDto dto);
 
+    public boolean saveScoreInfo(DayDayUpBo bo);
 }

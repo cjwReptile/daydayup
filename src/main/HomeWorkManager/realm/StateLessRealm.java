@@ -37,7 +37,6 @@ public class StateLessRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("doGetAuthorizationInfo");
         String userName=(String)principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo =  new SimpleAuthorizationInfo();
         authorizationInfo.addRoles(userService.findRoles(userName));
@@ -50,14 +49,14 @@ public class StateLessRealm extends AuthorizingRealm {
         StateLessToken stateLessToken=(StateLessToken)token;
         String userName=stateLessToken.getClientKey();
         String tokenStr=stateLessToken.getToken();
-        String serverToken= JwtUtils.encodeJwt(userName, SignatureAlgorithm.HS256);
+        //String serverToken= JwtUtils.encodeJwt(userName, SignatureAlgorithm.HS256);
         if(tokenStr==null||!sessionManager2.ValidateSession(userName,tokenStr)){
 
             throw new AuthenticationException("User " + userName + " authenticate fail in System");
 
         }
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
-                userName,serverToken,getName());
+                userName,tokenStr,getName());
         return authenticationInfo;
     }
 

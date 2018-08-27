@@ -1,9 +1,12 @@
 package HomeWorkManager.controller;
 
 import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.dto.StudentDto;
+import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
+import HomeWorkManager.enity.Integrate.ReturnEntity;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.HomeWorkService;
 import HomeWorkManager.service.UserService;
@@ -46,19 +49,34 @@ public class HomeWorkController {
     HashMap<String,String> map=new HashMap<>();
 
    @RequestMapping(value="/login",method = RequestMethod.POST)
-   public @ResponseBody Map<String,String> login(UserEnity userEnity, HttpServletRequest request, HttpServletResponse response){
-       HashMap<String,String> map=new HashMap<>();
+   public @ResponseBody ReturnEntity login(UserEnity userEnity, HttpServletRequest request, HttpServletResponse response){
+       HashMap<String,Object> map=new HashMap<>();
        map.put("flag","1");
-       if(userEnity.getUserName()==null||userEnity.getPassword()==null)
-           map.put("flag","0");
-
-       String token=JwtUtils.encodeJwt(userEnity.getUserName(), SignatureAlgorithm.HS256);
+       ReturnEntity returnEntity=null;
+       if(userEnity.getUserName()==null||userEnity.getPassword()==null){
+           returnEntity=new ReturnEntity(1,"用户信息为空");
+           return returnEntity;
+       }
+       UserEnity user=userService.findUserByName(userEnity.getUserName());
+       String token = "";
+       if(user.getType()!=null){
+           if(user.getType() == 1){
+               TeacherDto dto = userService.selectTeacherInfoByUserId(user.getUserId());
+               map.put("enity",dto);
+           }
+           if(user.getType() == 2){
+               StudentDto dto = userService.selectStudentInfoByUserId(user.getUserId());
+               map.put("enity",dto);
+           }
+       }
+       token=JwtUtils.encodeJwt(userEnity.getUserName(),SignatureAlgorithm.HS256);
        sessionManager2.addToSession(userEnity.getUserName(),token);
        map.put("loginTime",sessionManager2.getLoginTime(userEnity.getUserName(),token));
-       map.put("username",userEnity.getUserName());
-       map.put("roles",JSON.toJSONString(userService.findRoles(userEnity.getUserName())));
+       map.put("user",user);
+       //map.put("roles",JSON.toJSONString(userService.findRoles(userEnity.getUserId())));
        map.put("token",token);
-       return  map;
+       returnEntity=new ReturnEntity(map);
+       return  returnEntity;
    }
 
    @RequestMapping(value="/workLocationInfo",method = RequestMethod.POST)

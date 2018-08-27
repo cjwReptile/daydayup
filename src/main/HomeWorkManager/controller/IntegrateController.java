@@ -1,8 +1,11 @@
 package HomeWorkManager.controller;
 
 import HomeWorkManager.dto.IntegrateInfoDto;
+import HomeWorkManager.dto.IntegrateScoreDto;
+import HomeWorkManager.enity.Integrate.DayDayUpBo;
 import HomeWorkManager.enity.Integrate.IntegratePlateParent;
 import HomeWorkManager.enity.Integrate.IntegratePlateSon;
+import HomeWorkManager.enity.Integrate.ReturnEntity;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.enums.StateEnum;
 import HomeWorkManager.service.IntegrateService;
@@ -89,10 +92,10 @@ public class IntegrateController {
     }
 
     @RequestMapping(value = "/score",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getScoreInfo(String teaBelong){
+    public @ResponseBody Map<String,Object> getScoreInfo(IntegrateScoreDto dto){
         Map<String,Object> map=new HashMap<>();
         try {
-            List<Map<String, Object>> result =  integrateService.getScoreInfo(teaBelong);
+            List<Map<String, Object>> result =  integrateService.getScoreInfo(dto);
             map.put("data",result);
         }catch (Exception e){
             logger.error("错误",e);
@@ -102,6 +105,23 @@ public class IntegrateController {
         map.put("flag",StateEnum.SUCCESS.getValue());
         map.put("message","删除成功");
         return map;
+    }
+
+    @RequestMapping(value = "/score",method = RequestMethod.PUT)
+    public @ResponseBody ReturnEntity saveScoreInfo(DayDayUpBo bo){
+        ReturnEntity returnEntity=null;
+        if(null == bo || null==bo.getDataMap() || bo.getTeaBelong() == null || StringUtils.isEmpty(bo.getTime())){
+            returnEntity=new ReturnEntity(1,"参数不能为空");
+            return returnEntity;
+        }
+        try {
+            integrateService.saveScoreInfo(bo);
+        }catch (Exception e){
+            logger.error("错误",e);
+            returnEntity=ReturnEntity.FAIL;
+            return returnEntity;
+        }
+        return returnEntity;
     }
 
     @RequestMapping(value="/plateSon",method = RequestMethod.POST)

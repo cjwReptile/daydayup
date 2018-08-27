@@ -75,15 +75,43 @@
         where id=#{id}
     </delete>
 
-    <select id="getScoreInfo" resultType="HomeWorkManager.enity.Integrate.IntegratePlateScore">
-        select student_belong "stuBelong",
-        id "id",
-        score "score",
-        teacher_belong "teaBelong",
-        belong_plate "belongPlate"
+    <select id="getScoreInfo" resultType="HomeWorkManager.dto.IntegrateScoreDto">
+        select b.student_name "studentName",
+       a.id "id",
+        <if test="timeModel == 0">
+            score "score",
+        </if>
+        <if test="timeModel == 1 or timeModel == 2">
+            sum(score) "score",
+        </if>
+       b.student_id "studentId",
+       teacher_belong "teacherId",
+       belong_plate "belongPlate"
 
-        from hw_plate_score
-        where teacher_belong = #{teaBelong}
+  from hw_plate_score a
+  right join  hw_student b  on a.student_belong = b.student_id
+        where 1=1
+        <if test="studentName != null and studentName !=''">
+            and student_name like
+            CONCAT(#{studentName},'%')
+        </if>
+        <if test="timeModel == 0">
+            and  date_format(create_time,'%Y-%m-%d') = date_format(#{createTime},'%Y-%m-%d')
+        </if>
+        <if test="timeModel == 1">
+           and YEARWEEK(date_format(a.create_time,'%Y-%m-%d')) = YEARWEEK(date_format(#{createTime},'%Y-%m-%d'))
+           group by a.belong_plate,b.student_name,b.student_id,teacher_belong
+
+        </if>
+        <if test="timeModel == 2">
+            and  date_format(create_time,'%Y-%m') = date_format(#{createTime},'%Y-%m')
+            group by a.belong_plate,b.student_name,b.student_id,teacher_belong
+        </if>
+
+
+
+
+
 
     </select>
 
@@ -107,5 +135,22 @@
         update hw_plate_son set plate_name_son=#{plateName},update_time=NOW()
         where id=#{id}
     </update>
+
+    <delete id="deletePlateSonByParentId">
+        delete from hw_plate_son where parent_id=#{parentId}
+    </delete>
+
+    <update id="updateScore">
+          update hw_plate_score set score = #{score} where student_belong=#{user}
+    </update>
+
+    <update id="saveScoreInfo" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="cus">
+            insert into hw_plate_score (belong_plate,score,student_belong,create_time, teacher_belong)
+            values (#{cus.belongPlate},#{cus.score},#{cus.stuBelong},date_format(NOW(),'%Y-%m-%d'),#{cus.teaBelong})
+            on  DUPLICATE key update score=#{cus.score}
+        </foreach>
+    </update>
+
 
 </mapper>

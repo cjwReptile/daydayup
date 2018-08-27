@@ -8,16 +8,22 @@ public class IntegratePlateScore {
 
     private int belongPlate;
 
-    private String teabelong;
+    private String teaBelong;
 
     private String stuBelong;
 
-    public String getTeabelong() {
-        return teabelong;
+    private int week;
+
+    private String createTime;
+
+    private String scoreInfo;
+
+    public String getTeaBelong() {
+        return teaBelong;
     }
 
-    public void setTeabelong(String teabelong) {
-        this.teabelong = teabelong;
+    public void setTeaBelong(String teaBelong) {
+        this.teaBelong = teaBelong;
     }
 
     public int getId() {
@@ -50,5 +56,29 @@ public class IntegratePlateScore {
 
     public void setStuBelong(String stuBelong) {
         this.stuBelong = stuBelong;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public String getScoreInfo() {
+        return scoreInfo;
+    }
+
+    public void setScoreInfo(String scoreInfo) {
+        this.scoreInfo = scoreInfo;
     }
 }
