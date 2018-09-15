@@ -25,6 +25,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /**/login = anon
+                /**/register = anon
                 /logout = logout
                 /statics/** = anon
                 /css/** = anon

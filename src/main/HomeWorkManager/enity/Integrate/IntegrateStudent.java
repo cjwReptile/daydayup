@@ -4,11 +4,11 @@ public class IntegrateStudent {
 
     private int sid;
 
-    private int classId;
+    private String studentName;
 
-    private String sName;
+    private String studentId;
 
-    private int sex;
+    private String userId;
 
     public int getSid() {
         return sid;
@@ -18,27 +18,27 @@ public class IntegrateStudent {
         this.sid = sid;
     }
 
-    public int getClassId() {
-        return classId;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
-    public String getsName() {
-        return sName;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setsName(String sName) {
-        this.sName = sName;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
-    public int getSex() {
-        return sex;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setSex(int sex) {
-        this.sex = sex;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

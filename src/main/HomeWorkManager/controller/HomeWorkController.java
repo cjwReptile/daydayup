@@ -6,17 +6,20 @@ import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
+import HomeWorkManager.enity.Integrate.DayDayUpBo;
 import HomeWorkManager.enity.Integrate.ReturnEntity;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.HomeWorkService;
 import HomeWorkManager.service.UserService;
 import HomeWorkManager.shiroAndToken.session.SessionManager;
 import HomeWorkManager.utils.JwtUtils;
+import HomeWorkManager.utils.PassWordUtil;
 import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -53,11 +56,19 @@ public class HomeWorkController {
        HashMap<String,Object> map=new HashMap<>();
        map.put("flag","1");
        ReturnEntity returnEntity=null;
-       if(userEnity.getUserName()==null||userEnity.getPassword()==null){
+       if(userEnity.getUserId()==null||userEnity.getPassword()==null){
            returnEntity=new ReturnEntity(1,"用户信息为空");
            return returnEntity;
        }
-       UserEnity user=userService.findUserByName(userEnity.getUserName());
+       UserEnity user=userService.findUserByUserId(userEnity.getUserId());
+       userEnity.setSalt(user.getSalt());
+       String password = PassWordUtil.getEncryptPassword(userEnity);
+       /*if(password != null){
+           if(!password.equals(user.getPassword())){
+               returnEntity=new ReturnEntity(1,"账号或密码不正确，请重试");
+               return returnEntity;
+           }
+       }*/
        String token = "";
        if(user.getType()!=null){
            if(user.getType() == 1){
@@ -69,15 +80,33 @@ public class HomeWorkController {
                map.put("enity",dto);
            }
        }
-       token=JwtUtils.encodeJwt(userEnity.getUserName(),SignatureAlgorithm.HS256);
-       sessionManager2.addToSession(userEnity.getUserName(),token);
-       map.put("loginTime",sessionManager2.getLoginTime(userEnity.getUserName(),token));
+       token=JwtUtils.encodeJwt(userEnity.getUserId(),SignatureAlgorithm.HS256);
+       sessionManager2.addToSession(userEnity.getUserId(),token);
+       map.put("loginTime",sessionManager2.getLoginTime(userEnity.getUserId(),token));
        map.put("user",user);
        //map.put("roles",JSON.toJSONString(userService.findRoles(userEnity.getUserId())));
        map.put("token",token);
        returnEntity=new ReturnEntity(map);
        return  returnEntity;
    }
+
+    @RequestMapping(value="/register",method = RequestMethod.POST)
+    public @ResponseBody ReturnEntity register(@RequestBody DayDayUpBo bo){
+       UserEnity userEnity = bo.getUserEnity();
+
+       if(userEnity == null){
+           return new ReturnEntity(1,"用户信息为空");
+       }
+       StudentDto studentDto = bo.getStudentDto();
+       userEnity.setUserId(studentDto.getStudentId());
+       userEnity.setUserId(userEnity.getUserId());
+       userEnity.setType(2);
+       studentDto.setUserId(studentDto.getStudentId());
+       userService.createUser(userEnity);
+       homeWorkService.saveUserInfo(studentDto);
+       ReturnEntity entity = new ReturnEntity();
+       return entity;
+    }
 
    @RequestMapping(value="/workLocationInfo",method = RequestMethod.POST)
     public @ResponseBody Map<String,String > imageUpload(@RequestParam("file")CommonsMultipartFile file, HttpServletRequest request, HttpServletResponse response,@RequestParam String contentId,@RequestParam String contentType){

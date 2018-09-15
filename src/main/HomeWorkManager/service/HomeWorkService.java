@@ -1,6 +1,7 @@
 package HomeWorkManager.service;
 
 import HomeWorkManager.dto.HomeWorkInfoDTO;
+import HomeWorkManager.dto.StudentDto;
 import HomeWorkManager.enity.HomeWorkCommentPo;
 import HomeWorkManager.enity.HomeWorkLocationPo;
 import HomeWorkManager.enity.HomeWorkPo;
@@ -21,4 +22,7 @@ public interface HomeWorkService {
     public List<HomeWorkInfoDTO> getHomeWorkInfo(String listType);
 
     public void saveHomeWorkComment(HomeWorkCommentPo homeWorkCommentPo);
+
+    boolean  saveUserInfo(StudentDto dto);
+
 }

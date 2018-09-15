@@ -98,4 +98,34 @@
     <update id="updateReaded">
         UPDATE homework_content set content_readed="1" where content_id=#{contentId,javaType=long,jdbcType=BIGINT}
     </update>
+
+    <insert id="saveStuAndTeaRelate">
+        insert into hw_tea_stu
+        (
+        student_id,
+        teacher_id,
+        class_id
+        )VALUES
+        (
+        #{studentId},
+        #{teacherId},
+        #{classId}
+        )
+    </insert>
+
+    <insert id="saveStudentInfo">
+        insert into hw_student
+        (
+        student_id,
+        student_name,
+        user_id
+        )VALUES
+        (
+        #{studentId},
+        #{studentName},
+        #{userId}
+        )
+    </insert>
+
+
 </mapper>

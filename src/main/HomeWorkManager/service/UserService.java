@@ -13,6 +13,8 @@ public interface UserService {
 
     public UserEnity findUserByName(String userName);
 
+    public UserEnity findUserByUserId(String userId);
+
     public void createUser(UserEnity userEnity);
 
     public void deleteUser(Long userId);

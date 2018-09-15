@@ -1,21 +1,17 @@
-package HomeWorkManager.dto;
+package HomeWorkManager.enity.Integrate;
 
 /**
  * @Auther: cjw
- * @Date: 2018/8/16 22:26
+ * @Date: 2018/9/5 22:47
  * @Description:
  */
-public class StudentDto {
+public class IntegrateStuTea {
 
     private int id;
 
     private String studentId;
 
-    private String studentName;
-
     private String teacherId;
-
-    private String userId;
 
     private String classId;
 
@@ -35,28 +31,12 @@ public class StudentDto {
         this.studentId = studentId;
     }
 
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
     public String getTeacherId() {
         return teacherId;
     }
 
     public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getClassId() {

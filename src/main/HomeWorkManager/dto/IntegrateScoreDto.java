@@ -23,6 +23,8 @@ public class IntegrateScoreDto {
 
     private int timeModel;
 
+    private String sortPlate;
+
     public int getId() {
         return id;
     }
@@ -85,5 +87,13 @@ public class IntegrateScoreDto {
 
     public void setTimeModel(int timeModel) {
         this.timeModel = timeModel;
+    }
+
+    public String getSortPlate() {
+        return sortPlate;
+    }
+
+    public void setSortPlate(String sortPlate) {
+        this.sortPlate = sortPlate;
     }
 }

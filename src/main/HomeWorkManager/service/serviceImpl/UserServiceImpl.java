@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public UserEnity findUserByUserId(String userId) {
+        return userDao.findUserByUserId(userId);
+    }
+
+    @Override
     public void createUser(UserEnity userEnity) {
         PassWordUtil.encryptPassword(userEnity);
         userDao.createUser(userEnity);

@@ -24,7 +24,16 @@ public class PassWordUtil {
            System.out.println(userEnity.getCredentialsSalt());
            String newPassWord=new SimpleHash(
                    algorithmName, userEnity.getPassword(),ByteSource.Util.bytes(userEnity.getCredentialsSalt()),hashIterations).toHex();
-        userEnity.setPassword(newPassWord);
+           userEnity.setPassword(newPassWord);
     }
+
+    public static String getEncryptPassword(UserEnity userEnity){
+          if(userEnity == null) return null;
+        String newPassWord=new SimpleHash(
+                algorithmName, userEnity.getPassword(),ByteSource.Util.bytes(userEnity.getCredentialsSalt()),hashIterations).toHex();
+        return newPassWord;
+    }
+
+
 
 }

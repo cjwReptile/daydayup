@@ -39,7 +39,6 @@ public class StateLessFilter extends AccessControlFilter {
             onAjaxAuthFail(servletRequest,servletResponse);
             return false;
         }
-
         try {
             getSubject(servletRequest,servletResponse).login(stateLessToken);
         }catch (AuthenticationException e){
