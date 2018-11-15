@@ -8,6 +8,7 @@ import io.jsonwebtoken.impl.compression.CompressionCodecs;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by cjw on 2017/12/14.
@@ -29,7 +30,7 @@ public class JwtUtils {
 
 
 
-    public static String encodeJwt(String clientKey,SignatureAlgorithm signatureAlgorithm){
+    public static String encodeJwt(String clientKey,SignatureAlgorithm signatureAlgorithm,Map<String,Object> map){
         long curtime=System.currentTimeMillis();
         byte[] secretKey= DatatypeConverter.parseBase64Binary(propertiesUtil.getValue("secret"));
         JwtBuilder jwt= Jwts.builder();
@@ -39,7 +40,13 @@ public class JwtUtils {
             Date ex=new Date(Long.parseLong(timestamp)*60L*1000+curtime);
             jwt.setExpiration(ex);
         }
-      jwt.compressWith(CompressionCodecs.DEFLATE);
+        //加入用户信息
+        if(map!=null){
+            for(Map.Entry<String,Object> entry : map.entrySet()){
+                jwt.claim(entry.getKey(),entry.getValue());
+            }
+        }
+        jwt.compressWith(CompressionCodecs.DEFLATE);
         jwt.signWith(signatureAlgorithm,secretKey);
         return jwt.compact();
     }

@@ -4,6 +4,7 @@ import HomeWorkManager.service.UserService;
 import HomeWorkManager.shiroAndToken.StateLessToken;
 import HomeWorkManager.shiroAndToken.session.SessionManager;
 import HomeWorkManager.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -47,16 +48,13 @@ public class StateLessRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         StateLessToken stateLessToken=(StateLessToken)token;
-        String userName=stateLessToken.getClientKey();
         String tokenStr=stateLessToken.getToken();
-        //String serverToken= JwtUtils.encodeJwt(userName, SignatureAlgorithm.HS256);
-        if(tokenStr==null||!sessionManager2.ValidateSession(userName,tokenStr)){
-
-            throw new AuthenticationException("User " + userName + " authenticate fail in System");
-
+        Claims claims = JwtUtils.decodeJwt(tokenStr);
+        if(tokenStr==null||!sessionManager2.ValidateSession((String)claims.get("userId"),tokenStr)){
+            throw new AuthenticationException("authenticate fail in System");
         }
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
-                userName,tokenStr,getName());
+                claims.get("userId"),tokenStr,getName());
         return authenticationInfo;
     }
 

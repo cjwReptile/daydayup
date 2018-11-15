@@ -29,12 +29,9 @@ public class StateLessFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
 
         HttpServletRequest httpServletRequest=(HttpServletRequest)servletRequest;
-        String tttt=httpServletRequest.getRequestURI();
-        String userName=httpServletRequest.getHeader("username");
         Map<String, String[]> params = new HashMap<String, String[]>(servletRequest.getParameterMap());
-        Cookie[] cookies=httpServletRequest.getCookies();
         String clentDegist=httpServletRequest.getHeader("clentDegist");
-        StateLessToken stateLessToken=new StateLessToken(userName,params,clentDegist);
+        StateLessToken stateLessToken=new StateLessToken(params,clentDegist);
         if(clentDegist==null){
             onAjaxAuthFail(servletRequest,servletResponse);
             return false;

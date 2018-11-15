@@ -32,6 +32,7 @@
                 /images/** = anon
                 /trd/** = anon
                 /js/** = anon
+                /**/agent-wx_login=anon
                 /** = statelessAuthc
             </value>
         </property>

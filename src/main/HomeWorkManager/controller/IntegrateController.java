@@ -146,7 +146,7 @@ public class IntegrateController {
         }catch (Exception e){
             logger.error("plateSon put",e);
 
-            return result(false,"获取子版块成功");
+            return result(false,"获取子版块失败");
         }
         return  result(true,"获取子版块成功","data",data);
     }
@@ -186,7 +186,6 @@ public class IntegrateController {
             if(data.length%2==0){
                 for (int i=0;i<data.length;i+=2){
                      map.put((String)data[i],data[i+1]);
-
                 }
             }
 

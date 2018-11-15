@@ -1,14 +1,19 @@
 package HomeWorkManager.service.serviceImpl;
 
 import HomeWorkManager.dao.UserDao;
+import HomeWorkManager.dto.BaseInfoDto;
 import HomeWorkManager.dto.StudentDto;
 import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.UserEnity;
 import HomeWorkManager.service.UserService;
 import HomeWorkManager.utils.PassWordUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.registry.infomodel.User;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -83,4 +88,26 @@ public class UserServiceImpl implements UserService{
     public TeacherDto selectTeacherInfoByUserId(String userId) {
         return userDao.selectTeacherInfoByUserId(userId);
     }
+
+    public Map<String,Object> produceParams(){
+
+        return null;
+    }
+
+    @Override
+    public BaseInfoDto getBaseInfo(UserEnity user){
+        BaseInfoDto baseInfoDto = new BaseInfoDto();
+        if(user.getType() == 1){
+            TeacherDto dto = selectTeacherInfoByUserId(user.getUserId());
+            BeanUtils.copyProperties(dto,baseInfoDto);
+            baseInfoDto.setType(user.getType());
+        }
+        if(user.getType() == 2){
+            StudentDto dto = selectStudentInfoByUserId(user.getUserId());
+            BeanUtils.copyProperties(dto,baseInfoDto);
+            baseInfoDto.setType(user.getType());
+        }
+        return baseInfoDto;
+    }
+
 }

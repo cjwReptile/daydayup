@@ -1,5 +1,6 @@
 package HomeWorkManager.controller;
 
+import HomeWorkManager.dto.BaseInfoDto;
 import HomeWorkManager.dto.HomeWorkInfoDTO;
 import HomeWorkManager.dto.StudentDto;
 import HomeWorkManager.dto.TeacherDto;
@@ -61,31 +62,27 @@ public class HomeWorkController {
            return returnEntity;
        }
        UserEnity user=userService.findUserByUserId(userEnity.getUserId());
+       if(user == null){
+           returnEntity=new ReturnEntity(1,"登录失败，用户信息不正确");
+           return returnEntity;
+       }
        userEnity.setSalt(user.getSalt());
        String password = PassWordUtil.getEncryptPassword(userEnity);
-       /*if(password != null){
+       if(password != null){
            if(!password.equals(user.getPassword())){
                returnEntity=new ReturnEntity(1,"账号或密码不正确，请重试");
                return returnEntity;
            }
-       }*/
-       String token = "";
-       if(user.getType()!=null){
-           if(user.getType() == 1){
-               TeacherDto dto = userService.selectTeacherInfoByUserId(user.getUserId());
-               map.put("enity",dto);
-           }
-           if(user.getType() == 2){
-               StudentDto dto = userService.selectStudentInfoByUserId(user.getUserId());
-               map.put("enity",dto);
-           }
        }
-       token=JwtUtils.encodeJwt(userEnity.getUserId(),SignatureAlgorithm.HS256);
+       String token = "";
+       BaseInfoDto dto = userService.getBaseInfo(user);
+       Map<String,Object> paramsMap = new HashMap<>();
+       token=JwtUtils.encodeJwt(userEnity.getUserId(),SignatureAlgorithm.HS256,paramsMap);
        sessionManager2.addToSession(userEnity.getUserId(),token);
        map.put("loginTime",sessionManager2.getLoginTime(userEnity.getUserId(),token));
-       map.put("user",user);
        //map.put("roles",JSON.toJSONString(userService.findRoles(userEnity.getUserId())));
        map.put("token",token);
+       map.put("enity",dto);
        returnEntity=new ReturnEntity(map);
        return  returnEntity;
    }
@@ -93,12 +90,11 @@ public class HomeWorkController {
     @RequestMapping(value="/register",method = RequestMethod.POST)
     public @ResponseBody ReturnEntity register(@RequestBody DayDayUpBo bo){
        UserEnity userEnity = bo.getUserEnity();
-
        if(userEnity == null){
            return new ReturnEntity(1,"用户信息为空");
        }
        StudentDto studentDto = bo.getStudentDto();
-       userEnity.setUserId(studentDto.getStudentId());
+       studentDto.setUserId(studentDto.getStudentId());
        userEnity.setUserId(userEnity.getUserId());
        userEnity.setType(2);
        studentDto.setUserId(studentDto.getStudentId());
@@ -233,6 +229,15 @@ public class HomeWorkController {
         map.put("flag","1");
         return map;
     }
+
+    @RequestMapping(value="/agent-wx_login",method = RequestMethod.GET)
+    public @ResponseBody Map<String,String> appid(String code){
+        HashMap<String,String> map=new HashMap<>();
+        System.out.println(code+"=============================");
+        map.put("code","code");
+        return map;
+    }
+
 
 
 

@@ -1,5 +1,6 @@
 package HomeWorkManager.service;
 
+import HomeWorkManager.dto.BaseInfoDto;
 import HomeWorkManager.dto.StudentDto;
 import HomeWorkManager.dto.TeacherDto;
 import HomeWorkManager.enity.UserEnity;
@@ -32,5 +33,7 @@ public interface UserService {
     public StudentDto selectStudentInfoByUserId(String userId);
 
     public TeacherDto selectTeacherInfoByUserId(String userId);
+
+    BaseInfoDto getBaseInfo(UserEnity enity);
 
 }

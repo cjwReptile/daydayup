@@ -25,6 +25,11 @@ public class StateLessToken implements AuthenticationToken {
         this.token=token;
     }
 
+    public StateLessToken(Map<String,?> parameters,String token ){
+        this.parameters=parameters;
+        this.token=token;
+    }
+
     @Override
     public Object getPrincipal() {
         return this.clientKey;
